@@ -1,2 +1,3 @@
-# audacity_sdcnd
-Udacity Self Driving Car Project Submissions
+# Udacity Self Driving Car Nanodegre 
+
+Project Submissions Repository
