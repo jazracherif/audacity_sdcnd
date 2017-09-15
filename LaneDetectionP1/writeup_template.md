@@ -1,9 +1,5 @@
 # **Finding Lane Lines on the Road** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Finding Lane Lines on the Road**
@@ -15,24 +11,51 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/grayscale.jpg "Grayscale"
+[solidWhiteCurve]: ./test_images_out/solidWhiteCurve.jpg "Result"
+[solidWhiteRight]: ./test_images_out/solidWhiteRight.jpg "Result"
+[solidYellowCurve]: ./test_images_out/solidYellowCurve.jpg "Result"
+[solidYellowCurve2]: ./test_images_out/solidYellowCurve2.jpg "Result"
+[solidYellowLeft]: ./test_images_out/solidYellowLeft.jpg "Result"
+[whiteCarLaneSwitch]: ./test_images_out/whiteCarLaneSwitch.jpg "Result"
 
 ---
 
 ### Reflection
 
-### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Description of the pipeline
 
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
+My pipeline consisted of 6 steps:
+1. Extract the Grayscale version of the image
+2. Perform a Gaussian Blur with a kernel
+3. Run the Canny Detection Algorithm
+4. Cut to the region of interest based on the height and width values
+5. Run the Hough Transform
+6. Final Cut of the region of interset.
 
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
 
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
+Please Find below the example pipeline for each of the pictures:
 
-![alt text][image1]
+#solidWhiteCurve.jpg
+![alt text][solidWhiteCurve]  
+
+#solidWhiteRight.jpg
+![alt text][solidWhiteRight]  
+
+#solidYellowCurve.jpg
+![alt text][solidYellowCurve]  
+
+#solidYellowCurve2.jpg
+![alt text][solidYellowCurve2]  
+
+#solidYellowLeft.jpg
+![alt text][solidYellowLeft]  
+
+#whiteCarLaneSwitch.jpg
+![alt text][whiteCarLaneSwitch]  
 
 
-### 2. Identify potential shortcomings with your current pipeline
+### 2.  Potential shortcomings with current pipeline
 
 
 One potential shortcoming would be what would happen when ... 
@@ -40,7 +63,7 @@ One potential shortcoming would be what would happen when ...
 Another shortcoming could be ...
 
 
-### 3. Suggest possible improvements to your pipeline
+### 3. Possible improvements to your pipeline
 
 A possible improvement would be to ...
 
