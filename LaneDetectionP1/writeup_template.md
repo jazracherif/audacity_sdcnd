@@ -2,9 +2,7 @@
 
 ---
 
-**Finding Lane Lines on the Road**
-
-The goals / steps of this project are the following:
+The goals of this project are the following:
 * Make a pipeline that finds lane lines on the road
 * Reflect on how the pipeline can be improved
 
@@ -62,14 +60,17 @@ Find below the various pictures generated through the pipeline for each of the i
 
 There are several potential shortcomings: 
 
-1. The region of interest is fixed in terms of the proportion of the height and width of the pictures, and depends on the level of zooming in the camera. If the scene appears farther away, more information will come into the picture and more lines will be detected by canny/hough transform 
-2. The lines are currently assumed to be fairly vertical and horizontal lines are filtered out. Further more, the model of a line is a linear equation rather than a polygone of size 2 or more. Thus curving in the road lanes will not be captured
-3. The Canny edge detector parameters are fixed and will need to be adjusted for different lighting conditions as the intensity of the pixel will be different. Thus with the current values, we might not detecting lanes in darker where the gradient values are smaller.
-4. The Hough transform's parameter may not capture all of lanes marking. 
+1. The Region of Interest is fixed in terms of the proportion of the height and width of the pictures, and depends on the level of zooming in the camera. If the scene appears farther away, more information will come into the picture and more lines will be detected by canny/hough transform.
+2. The lines are currently assumed to be fairly vertical and horizontal lines are filtered out. Further more, the model of a lane is a linear equation rather than a polynomial one. Thus curves in the road lanes and left/right turns will not be well captured.
+3. The Canny Edge Detector parameters are fixed and will need to be adjusted for different lighting conditions as the pixel intensities will be different. Thus with the current values we might not detecting lanes in darker environments where the gradient values are smaller.
+4. The Hough Transform's parameter may not capture all of lanes marking, for example dottet line may have different amount of separation.
+5. The presence of cars in front of the camera and in the same lane could be a problem as it may lead the Hough transform function to generate many more lines.
+
+### 3. Possible Improvements to the Pipeline
+
+The following is a list of possible improvements:
+1. One would be to fit the data using a quadratic line rather than a linear one. This will better match lanes at turns.  
+2. To deal with different lightening conditions, we could anchor the parameters of the canny edge detector to the overall mean and variance of all the pixels values.  
+3. A smoothing mechanism should be introduced to avoid large changes in the lanes markings when moving from 1 picture frame to the next. This should help stabilize the output. 
 
 
-### 3. Possible Improvements to your Pipeline
-
-A possible improvement would be to fit the data using a quadratic line rather than a linear one. This will better match lanes at turns. 
-
-Another potential improvement could be to adapt the values of the canny edge and hough transform based on the conditions of the road. 
