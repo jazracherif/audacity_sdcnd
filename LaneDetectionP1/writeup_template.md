@@ -6,7 +6,7 @@
 
 The goals / steps of this project are the following:
 * Make a pipeline that finds lane lines on the road
-* Reflect on your work in a written report
+* Reflect on how the pipeline can be improved
 
 
 [//]: # (Image References)
@@ -24,13 +24,12 @@ The goals / steps of this project are the following:
 
 ### 1. Description of the pipeline
 
-My pipeline consisted of 6 steps:
-1. Extract the Grayscale version of the image
-2. Perform a Gaussian Blur with a kernel
-3. Run the Canny Detection Algorithm
-4. Cut to the region of interest based on the height and width values
-5. Run the Hough Transform
-6. Final Cut of the region of interset.
+My pipeline consisted of the following steps:
+1. Start by extracting the Grayscale version of the image
+2. Perform a Gaussian Blur to remove noise.
+3. Run the Canny Detection Algorithm and extract the edges of maximum gradient.
+4. Cut to the region of interest based on the height and width values.
+5. Run the Hough Transform and process the output lines.
 
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
 
@@ -55,7 +54,7 @@ Please Find below the example pipeline for each of the pictures:
 ![alt text][whiteCarLaneSwitch]  
 
 
-### 2.  Potential shortcomings with current pipeline
+### 2.  Potential Shortcomings with Current Pipeline
 
 
 One potential shortcoming would be what would happen when ... 
@@ -63,7 +62,7 @@ One potential shortcoming would be what would happen when ...
 Another shortcoming could be ...
 
 
-### 3. Possible improvements to your pipeline
+### 3. Possible Improvements to your Pipeline
 
 A possible improvement would be to ...
 
