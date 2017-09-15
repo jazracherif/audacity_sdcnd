@@ -36,22 +36,22 @@ In order to draw a single line on the left and right lanes, I modified the draw_
 
 Please Find below the example pipeline for each of the pictures:
 
-#solidWhiteCurve.jpg  
+#### solidWhiteCurve.jpg  
 ![alt text][solidWhiteCurve]  
 
-#solidWhiteRight.jpg  
+#### solidWhiteRight.jpg  
 ![alt text][solidWhiteRight]  
 
-#solidYellowCurve.jpg  
+#### solidYellowCurve.jpg  
 ![alt text][solidYellowCurve]  
 
-#solidYellowCurve2.jpg  
+#### solidYellowCurve2.jpg  
 ![alt text][solidYellowCurve2]  
 
-#solidYellowLeft.jpg  
+#### solidYellowLeft.jpg  
 ![alt text][solidYellowLeft]  
 
-#whiteCarLaneSwitch.jpg  
+#### whiteCarLaneSwitch.jpg  
 ![alt text][whiteCarLaneSwitch]  
 
 
