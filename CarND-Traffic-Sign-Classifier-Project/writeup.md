@@ -200,11 +200,12 @@ Right-of-way at the next intersection
 
 ![alt text][test3] ![alt text][test3-32x32]
 
-Pedestrians
+
+Road work
 
 ![alt text][test4] ![alt text][test4-32x32]
 
-Road work
+Pedestrians
 
 ![alt text][test5] ![alt text][test5-32x32]
 
@@ -219,28 +220,68 @@ Here are the results of the prediction:
 |1 | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
 | 4 | Speed limit (70km/h)          | Keep right                      |
 |11 | Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
-|27 | Pedestrians	      		| General caution					 				|
 |25  | Road work			| Bumpy road      							|
-
+|27 | Pedestrians            | General caution                   |
 
 The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 43rd cell of the Ipython notebook.
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+
+| Probability           |     Prediction                    |
+|:---------------------:|:---------------------------------------------:|
+|0.933629 |Speed limit (30km/h) (1) |
+|0.0623169| Speed limit (50km/h) (2)|
+|0.00231506| Speed limit (60km/h) (3)|
+|0.00133798 |Speed limit (80km/h) (5)|
+|0.000383944| Speed limit (70km/h) (4)|
 
 
-For the second image ... 
+For the second image, expected label is Right-of-way at the next intersection (11)
+
+| Probability           |     Prediction                    |
+|:---------------------:|:---------------------------------------------:|
+|0.999846 |Right-of-way at the next intersection (11)|
+|0.000150426| Beware of ice/snow (30)|
+|3.49105e-06| Double curve (21)|
+|4.69073e-09| Pedestrians (27)|
+|2.48062e-12 |Roundabout mandatory (40)|
+
+For the third image, expected label is Speed limit (70km/h) (4)
+
+| Probability           |     Prediction                    |
+|:---------------------:|:---------------------------------------------:|
+|0.528475| Traffic signals (26)|
+|0.23177 |Children crossing (28)|
+|0.119167 |Roundabout mandatory (40)|
+|0.0350694 |Speed limit (120km/h) (8)|
+|0.0304682 |Dangerous curve to the right (20)|
+
+For the 4th image, expected label is Pedestrians (27),
+
+| Probability           |     Prediction                    |
+|:---------------------:|:---------------------------------------------:|
+|0.998928 |General caution (18)|
+|0.000918859 |Go straight or left (37)|
+|0.000152759 |Traffic signals (26)|
+|7.96076e-09 |Wild animals crossing (31)|
+|8.39578e-11 |Turn right ahead (33)|
+
+For the 5th image, expected label is Road work (25)
+
+| Probability           |     Prediction                    |
+|:---------------------:|:---------------------------------------------:|
+|0.959543 |Wild animals crossing (31)|
+|0.0389646 |Double curve (21)|
+|0.000781188 |Slippery road (23)|
+|0.000363241 |Dangerous curve to the left (19)|
+|0.000279449 |General caution (18)|
+
+
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
