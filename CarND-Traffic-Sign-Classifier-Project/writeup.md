@@ -19,6 +19,15 @@ The goals / steps of this project are the following:
 [train2]: ./results/train-2.jpg "Yield"
 [train3]: ./results/train-3.jpg "Road Work"
 
+[grayscaling1]: ./results/before-grayscaling.jpg "Before Grayscaling"
+[grayscaling2]: ./results/after-grayscaling.jpg  "After Grayscaling"
+
+[augment1]: ./results/augment1.jpg  "Data Augmentation 1"
+[augment2]: ./results/augment2.jpg  "Data Augmentation 2"
+[augment3]: ./results/augment3.jpg  "Data Augmentation 3"
+[augment4]: ./results/augment4.jpg  "Data Augmentation 4"
+
+
 [image4]: ./test/1.jpeg "Traffic Sign 1"
 [image5]: ./test/4.jpeg "Traffic Sign 2"
 [image6]: ./test/11.jpeg "Traffic Sign 3"
@@ -26,18 +35,15 @@ The goals / steps of this project are the following:
 [image8]: ./test/27.jpeg "Traffic Sign 5"
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
----
-###Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.
 
 link to my [project code](https://github.com/jazracherif/udacity_sdcnd/blob/master/CarND-Traffic-Sign-Classifier-Project/writeup.md)
 
-### Data Set Summary & Exploration
+---
 
-#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
+### I- Data Set Summary & Exploration
+
+#### 1. Basic summary of the data set.
 
 I used the numpy and matplotlib library to calculate summary statistics of the traffic signs data set and plot them:
 
@@ -47,7 +53,7 @@ I used the numpy and matplotlib library to calculate summary statistics of the t
 * The shape of a traffic sign image is 32, 32, 3
 * The number of unique classes/labels in the data set is 4
 
-#### 2. Include an exploratory visualization of the dataset.
+#### 2. Exploratory visualization of the dataset.
 
 First, here are some 32x32x3 pictures taken randomly from the dataset. We  can see the haziness of the pictures, and how some of them need extra visual work to identify what the sign is saying.
 
@@ -59,44 +65,52 @@ Here is an exploratory visualization of the training dataset. It is a histogram 
 
 ![alt text][image1]
 
-We can see that the distribution of pictures amongst classes varies widely, some classes such as class1:"Speed Limit (30Km/h)" and class2:"Speed Limit (50Km/h)" have over 2000 pictures while classes like class0:"Speed limit (20km/h)" and class37:"Go straight or left" have less than 200 pictures
+We can see that the distribution of pictures amongst classes varies widely, some classes such as class 1:"Speed Limit (30Km/h)" and class 2:"Speed Limit (50Km/h)" have around 2000 pictures while classes like class 0:"Speed limit (20km/h)" and class 37:"Go straight or left" have less than 200 pictures
 
-Here is 5 top most classes and 5 bottom-most classes in terms of number of points
-Top Labels
+Here are the top-5 most common classes and 5 least common classes in terms of number of points
+Most Common Labels
 1)  2010 pts : Speed limit (50km/h) (2)
 2) 1980 pts : Speed limit (30km/h) (1)
 3) 1920 pts : Yield (13)
 4) 1890 pts : Priority road (12)
 5) 1860 pts : Keep right (38)
 
-Bottom Labels
+Least Common Labels
 1) 180 pts : Speed limit (20km/h) (0)
 2) 180 pts : Go straight or left (37)
 3) 180 pts : Dangerous curve to the left (19)
 4) 210 pts : End of all speed and passing limits (32)
 5) 210 pts : Pedestrians (27)
 
-### Design and Test a Model Architecture
+### II- Design and Test a Model Architecture
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+In order to meet the target of 93% accuracy on the Validation set, I only needed the following two preprocessing techniques:
+1. Grayscaling
+2. Normalization
+
+As a first step, I decided to convert the images to **grayscale** because the color information did not really add much to the kind of label the image represented. Accuracy improved substantially after making this change.
 
 Here is an example of a traffic sign image before and after grayscaling.
 
-![alt text][image2]
+![alt text][grayscaling1]
+![alt text][grayscaling2]
 
-As a last step, I normalized the image data because ...
+As the second step, I **normalized** the image data because this will allow better convergence during Gradient descent optimization
 
-I decided to generate additional data because ... 
+**Data Augmentation Work**
+In the beginning, when I was changing my architecture and could not meet the target accuracy score, I decided to use data augmentation, though I did not use it in the end product. I was inspired by the discussion in this post on [Traffic sign classification](https://medium.com/@vivek.yadav/improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification-using-6355346da2dc) and used the following techinques:
+1. Brightness increase
+2. Rotation
+3. Translation
+4. Shear
 
-To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
+I spent a little time tuning the data set. Here are some examples I was able to generate
+![alt text][augment1]
+![alt text][augment2]
+![alt text][augment3]
+![alt text][augment4]
 
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
@@ -151,7 +165,7 @@ it's simple and proven to work on small pictures to detect letters and numbers.
 
  The training set error is very high, meaning that the model is performing very well over the training set. However the validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lowers than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a solution for which adding more points to the validation set could help with.
 
-### Test a Model on New Images
+### III- Test a Model on New Images
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
