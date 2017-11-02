@@ -188,13 +188,23 @@ As a next step, more can be done to increase the validation set accuracy such as
 
 Here are five German traffic signs that I found on the web, each of them of different size and next to its its processed version in 32x32 ratio:
 
+Speed limit (30km/h)
+
 ![alt text][test1] ![alt text][test1-32x32]
+
+Speed limit (70km/h)
 
 ![alt text][test2] ![alt text][test2-32x32]
 
+Right-of-way at the next intersection
+
 ![alt text][test3] ![alt text][test3-32x32]
 
+Pedestrians
+
 ![alt text][test4] ![alt text][test4-32x32]
+
+Road work
 
 ![alt text][test5] ![alt text][test5-32x32]
 
@@ -204,16 +214,16 @@ The first image might be difficult to classify because ...
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Speed limit (30km/h)      		| Speed limit (30km/h)   									|
-| Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
-| Speed limit (70km/h)					| Keep right											|
-| Pedestrians	      		| General caution					 				|
-| Road narrows on the right			| Bumpy road      							|
+| label | Image			        |     Prediction	        					|
+|:----|:---------------------:|:---------------------------------------------:|
+|1 | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
+| 4 | Speed limit (70km/h)          | Keep right                      |
+|11 | Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
+|27 | Pedestrians	      		| General caution					 				|
+|25  | Road work			| Bumpy road      							|
 
 
-The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916
+The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
