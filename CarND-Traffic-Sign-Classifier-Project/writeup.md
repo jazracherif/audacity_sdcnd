@@ -107,9 +107,9 @@ Dropout = 0.8
 ####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of 0.998
+* validation set accuracy of  0.940
+* test set accuracy of 0.916
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
@@ -120,9 +120,12 @@ If an iterative approach was chosen:
 
 If a well known architecture was chosen:
 * What architecture was chosen?
+A version of the Lenet architecture was used
 * Why did you believe it would be relevant to the traffic sign application?
+it's simple and proven to work on small pictures to detect letters and numbers.
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
+
+ The training set error is very high, meaning that the model is performing very well over the training set. However the validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lowers than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a solution for which adding more points to the validation set could help with.
 
 ###Test a Model on New Images
 
