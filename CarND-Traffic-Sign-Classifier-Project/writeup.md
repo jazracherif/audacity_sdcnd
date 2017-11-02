@@ -14,8 +14,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./results/image1.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
+
+[train1]: ./results/train-1.jpg "No Passing"
+[train2]: ./results/train-2.jpg "Yield"
+[train3]: ./results/train-3.jpg "Road Work"
 
 [image4]: ./test/1.jpeg "Traffic Sign 1"
 [image5]: ./test/4.jpeg "Traffic Sign 2"
@@ -37,8 +39,7 @@ You're reading it! and here is a link to my [project code](https://github.com/ud
 
 ####1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+I used the numpy and matplotlib library to calculate summary statistics of the traffic signs data set and plot them:
 
 * The size of training set is 34799
 * The size of the validation set is 4410
@@ -48,9 +49,32 @@ signs data set:
 
 ####2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data is distributed amongst the various classes.
+First, here are some 32x32x3 pictures taken randomly from the dataset. We  can see the haziness of the pictures, and how some of them need extra visual work to identify what the sign is saying.
+
+![alt text][train1]
+![alt text][train2]
+![alt text][train3]
+
+Here is an exploratory visualization of the training dataset. It is a histogram showing how the data is distributed amongst the various classes.
 
 ![alt text][image1]
+
+We can see that the distribution of pictures amongst classes varies widely, some classes such as class1:"Speed Limit (30Km/h)" and class2:"Speed Limit (50Km/h)" have over 2000 pictures while classes like class0:"Speed limit (20km/h)" and class37:"Go straight or left" have less than 200 pictures
+
+Here is 5 top most classes and 5 bottom-most classes in terms of number of points
+Top Labels
+1)  2010 pts : Speed limit (50km/h) (2)
+2) 1980 pts : Speed limit (30km/h) (1)
+3) 1920 pts : Yield (13)
+4) 1890 pts : Priority road (12)
+5) 1860 pts : Keep right (38)
+
+Bottom Labels
+1) 180 pts : Speed limit (20km/h) (0)
+2) 180 pts : Go straight or left (37)
+3) 180 pts : Dangerous curve to the left (19)
+4) 210 pts : End of all speed and passing limits (32)
+5) 210 pts : Pedestrians (27)
 
 ###Design and Test a Model Architecture
 
