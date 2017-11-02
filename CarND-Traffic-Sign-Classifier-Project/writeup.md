@@ -13,6 +13,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
+[architecture]: ./architecture-diagram.png "Architecture"
+
 [image1]: ./results/image1.jpg "Visualization"
 
 [train1]: ./results/train-1.jpg "No Passing"
@@ -133,6 +135,12 @@ Layer id | Layer         		|     Description	        					|
 |10| Dropout		|	keep_prob =0.8											|
 |11|	fully Connected				|	120x84											|
 |12|  Softmax        |  84*43                      |
+
+
+See the architecture below:
+
+![alt text][architecture]
+
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
