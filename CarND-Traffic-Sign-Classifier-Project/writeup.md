@@ -120,6 +120,13 @@ I spent a little time tuning the data set. Here are some examples I was able to 
 
 My final model consisted of the Lenet model with the addition of connected the first convolution layer just before pooling with the first fully connected layer, a technique taken from the [Lecun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf)
 
+See the architecture below:
+
+![alt text][architecture]
+
+More detailed description in the following table:
+
+
 Layer id | Layer         		|     Description	        					|
 |:----|:---------------------:|:---------------------------------------------:|
 |0 | Input         		| 32x32x3 RGB image   							|
@@ -133,13 +140,12 @@ Layer id | Layer         		|     Description	        					|
 |8| Fully connected		| input 5104, output 120       									|
 |9| RELU				| .        									|
 |10| Dropout		|	keep_prob =0.8											|
-|11|	fully Connected				|	120x84											|
+|11|	Fully Connected				|	120x84											|
 |12|  Softmax        |  84*43                      |
 
 
-See the architecture below:
 
-![alt text][architecture]
+
 
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
