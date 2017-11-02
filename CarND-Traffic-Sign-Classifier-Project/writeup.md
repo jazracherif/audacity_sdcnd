@@ -30,11 +30,20 @@ The goals / steps of this project are the following:
 [augment4]: ./results/augment4.jpg  "Data Augmentation 4"
 
 
-[image4]: ./test/1.jpeg "Traffic Sign 1"
-[image5]: ./test/4.jpeg "Traffic Sign 2"
-[image6]: ./test/11.jpeg "Traffic Sign 3"
-[image7]: ./test/25.jpeg "Traffic Sign 4"
-[image8]: ./test/27.jpeg "Traffic Sign 5"
+[test1]: ./test/1.jpeg "Traffic Sign 1"
+[test1-32x32]: ./test/1-processed.jpeg "32x32 Traffic Sign 1"
+
+[test2]: ./test/4.jpeg "Traffic Sign 2"
+[test2-32x32]: ./test/4-processed.jpeg "32x32 Traffic Sign 2"
+
+[test3]: ./test/11.jpeg "Traffic Sign 3"
+[test3-32x32]: ./test/11-processed.jpeg "32x32 Traffic Sign 3"
+
+[test4]: ./test/25.jpeg "Traffic Sign 4"
+[test4-32x32]: ./test/25-processed.jpeg "32x32 Traffic Sign 4"
+
+[test5]: ./test/27.jpeg "Traffic Sign 5"
+[test5-32x32]: ./test/27-processed.jpeg "32x32 Traffic Sign 5"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.
@@ -145,40 +154,33 @@ Layer id | Layer         		|     Description	        					|
 
 
 
-
-
-
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
-EPOCHS = 50
-BATCH_SIZE = 128
-learning_rate = 0.001
-Adam Optimizer
-Dropout = 0.8
+To train the model, I used the following parameters
+* learning_rate = 0.001
+* Batch Size = 128
+* Dropout = 0.8
+* Optimizer = Adam
+* n_epoch = 50
 
-#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93.
+
+I started with the LENET model because it's a simple and proven architecture known to work on small pictures to detect letters and numbers. I first focused on tuning the learning rate as well as the initial variance values. For values of alpha= 0.001 and sigma= 0.1, I was able to get the accuracy on the traning set to be above 0.95, but the Validation accuracy was stuck at 0.89
+
+I then attempt to follow some of the steps mentionned in the  [Lecun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) in particular connecting the convolutional later to the fully connected layer.  This immediately benefited the validation error as well as the training error, which could now reach 0.99.
+
+Before reaching the above results, I also attempting changing the model, such as adding additional convolution layer as well as expanding the fully connected layer to contain more units, for example 1024x1024. I found that all these models overfit the training set but then did not do as well on the validation set. I therefore went back to the simpler LENET architecture and made the change mentionned above.
+
+Finally, in order to deal with the variance problem and get the validation score up beyong the 0.93 threshold, I added a Dropout layer just after the first Fully Connected layer, with keep_prob = 0.8. This was enough to push the accuracy to 0.94
 
 My final model results were:
-* training set accuracy of 0.998
-* validation set accuracy of  0.940
-* test set accuracy of 0.916
+* Training set accuracy of 0.998
+* Validation set accuracy of  0.940
+* Test set accuracy of 0.916
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+The training set accuracy is very high, meaning that the model is performing very well over the training set. The validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lower than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a problem which may be solved by adding more points to the validation set.
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-A version of the Lenet architecture was used
-* Why did you believe it would be relevant to the traffic sign application?
-it's simple and proven to work on small pictures to detect letters and numbers.
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
-
- The training set error is very high, meaning that the model is performing very well over the training set. However the validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lowers than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a solution for which adding more points to the validation set could help with.
+As a next step, more can be done to increase the validation set accuracy such as data augmentation and regularization techniques.
 
 ### III- Test a Model on New Images
 
@@ -186,8 +188,15 @@ it's simple and proven to work on small pictures to detect letters and numbers.
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][[test1] ![alt text][[test1-32x32]
+
+![alt text][[test2] ![alt text][[test2-32x32]
+
+![alt text][[test3] ![alt text][[test3-32x32]
+
+![alt text][[test4] ![alt text][[test4-32x32]
+
+![alt text][[test5] ![alt text][[test5-32x32]
 
 The first image might be difficult to classify because ...
 
