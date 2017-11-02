@@ -188,15 +188,15 @@ As a next step, more can be done to increase the validation set accuracy such as
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][[test1] ![alt text][[test1-32x32]
+![alt text][test1] ![alt text][test1-32x32]
 
-![alt text][[test2] ![alt text][[test2-32x32]
+![alt text][test2] ![alt text][test2-32x32]
 
-![alt text][[test3] ![alt text][[test3-32x32]
+![alt text][test3] ![alt text][test3-32x32]
 
-![alt text][[test4] ![alt text][[test4-32x32]
+![alt text][test4] ![alt text][test4-32x32]
 
-![alt text][[test5] ![alt text][[test5-32x32]
+![alt text][test5] ![alt text][test5-32x32]
 
 The first image might be difficult to classify because ...
 
