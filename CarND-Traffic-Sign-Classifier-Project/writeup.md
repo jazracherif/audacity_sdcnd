@@ -107,6 +107,7 @@ In the beginning, when I was changing my architecture and could not meet the tar
 4. Shear
 
 I spent a little time tuning the data set. Here are some examples I was able to generate:
+
 ![alt text][augment1]
 ![alt text][augment2]
 ![alt text][augment3]
