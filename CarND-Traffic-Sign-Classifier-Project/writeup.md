@@ -45,6 +45,26 @@ The goals / steps of this project are the following:
 [test5]: ./test/27.jpeg "Traffic Sign 5"
 [test5-32x32]: ./test/27-processed.jpeg "32x32 Traffic Sign 5"
 
+[fm-1-input]: ./test/activations/1-input.jpg "32x32 Traffic Sign 1 Input"
+[fm-1-conv1]: ./test/activations/1-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
+[fm-1-conv2]: ./test/activations/1-conv2-feature-map.jpg "32x32 Traffic Sign 1 Conv2"
+
+[fm-4-input]: ./test/activations/4-input.jpg "32x32 Traffic Sign 1 Input"
+[fm-4-conv1]: ./test/activations/4-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
+[fm-4-conv2]: ./test/activations/4-conv2-feature-map.jpg "32x32 Traffic Sign 1 Conv2"
+
+[fm-11-input]: ./test/activations/11-input.jpg "32x32 Traffic Sign 1 Input"
+[fm-11-conv1]: ./test/activations/11-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
+[fm-11-conv2]: ./test/activations/11-conv2-feature-map.jpg "32x32 Traffic Sign 1 Conv2"
+
+[fm-25-input]: ./test/activations/25-input.jpg "32x32 Traffic Sign 1 Input"
+[fm-25-conv1]: ./test/activations/25-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
+[fm-25-conv2]: ./test/activations/25-conv2-feature-map.jpg "32x32 Traffic Sign 1 Conv2"
+
+[fm-27-input]: ./test/activations/27-input.jpg "32x32 Traffic Sign 1 Input"
+[fm-27-conv1]: ./test/activations/27-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
+[fm-27-conv2]: ./test/activations/27-conv2-feature-map.jpg "32x32 Traffic Sign 1 Conv2"
+
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.
 
@@ -217,9 +237,9 @@ Here are the results of the prediction:
 
 | label | Image			        |     Prediction	        					|
 |:----|:---------------------:|:---------------------------------------------:|
-|1 | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
-| 4 | Speed limit (70km/h)          | Keep right                      |
-|11 | Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
+|1  | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
+| 4  | Speed limit (70km/h)          | Keep right                      |
+|11  | Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
 |25  | Road work			| Bumpy road      							|
 |27 | Pedestrians            | General caution                   |
 
@@ -227,63 +247,90 @@ The model was able to correctly guess 2 of the 5 traffic signs, which gives an a
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 43rd cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 49th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the 1st image, Expected label is Speed limit (30km/h) (1)
+| label | Image |     Prediction |
+:----|:---------------------:|:-------------------------:|
+| 0.999882 | Speed limit (30km/h) (1) |
+| 0.000117751 | Speed limit (50km/h) (2) |
+| 2.31641e-07 | Speed limit (80km/h) (5) |
+| 6.03377e-08 | Speed limit (20km/h) (0) |
+| 2.28642e-10 | Roundabout mandatory (40) |
 
+For the 2nd image, Expected label is Right-of-way at the next intersection (11)
+| label | Image |     Prediction |
+:----|:---------------------:|:-------------------------:|
+| 0.953465 | Right-of-way at the next intersection (11) |
+| 0.0463719 | Beware of ice/snow (30) |
+| 8.602e-05 | Pedestrians (27) |
+| 7.48408e-05 | Double curve (21) |
+| 1.10988e-06 | Slippery road (23) |
 
-| Probability           |     Prediction                    |
-|:---------------------:|:---------------------------------------------:|
-|0.933629 |Speed limit (30km/h) (1) |
-|0.0623169| Speed limit (50km/h) (2)|
-|0.00231506| Speed limit (60km/h) (3)|
-|0.00133798 |Speed limit (80km/h) (5)|
-|0.000383944| Speed limit (70km/h) (4)|
+For the 3rd image, Expected label is Speed limit (70km/h) (4)
+| label | Image |     Prediction |
+:----|:---------------------:|:-------------------------:|
+| 0.841088 | Bumpy road (22) |
+| 0.100677 | Bicycles crossing (29) |
+| 0.0435875 | Wild animals crossing (31) |
+| 0.00754137 | Road work (25) |
+| 0.0020486 | Dangerous curve to the left (19) |
 
+For the 4th image, Expected label is Pedestrians (27)
+| label | Image |     Prediction |
+:----|:---------------------:|:-------------------------:|
+| 0.445035 | Go straight or left (37) |
+| 0.214535 | Keep left (39) |
+| 0.1452 | Turn right ahead (33) |
+| 0.101017 | Stop (14) |
+| 0.0624454 | General caution (18) |
 
-For the second image, expected label is Right-of-way at the next intersection (11)
-
-| Probability           |     Prediction                    |
-|:---------------------:|:---------------------------------------------:|
-|0.999846 |Right-of-way at the next intersection (11)|
-|0.000150426| Beware of ice/snow (30)|
-|3.49105e-06| Double curve (21)|
-|4.69073e-09| Pedestrians (27)|
-|2.48062e-12 |Roundabout mandatory (40)|
-
-For the third image, expected label is Speed limit (70km/h) (4)
-
-| Probability           |     Prediction                    |
-|:---------------------:|:---------------------------------------------:|
-|0.528475| Traffic signals (26)|
-|0.23177 |Children crossing (28)|
-|0.119167 |Roundabout mandatory (40)|
-|0.0350694 |Speed limit (120km/h) (8)|
-|0.0304682 |Dangerous curve to the right (20)|
-
-For the 4th image, expected label is Pedestrians (27),
-
-| Probability           |     Prediction                    |
-|:---------------------:|:---------------------------------------------:|
-|0.998928 |General caution (18)|
-|0.000918859 |Go straight or left (37)|
-|0.000152759 |Traffic signals (26)|
-|7.96076e-09 |Wild animals crossing (31)|
-|8.39578e-11 |Turn right ahead (33)|
-
-For the 5th image, expected label is Road work (25)
-
-| Probability           |     Prediction                    |
-|:---------------------:|:---------------------------------------------:|
-|0.959543 |Wild animals crossing (31)|
-|0.0389646 |Double curve (21)|
-|0.000781188 |Slippery road (23)|
-|0.000363241 |Dangerous curve to the left (19)|
-|0.000279449 |General caution (18)|
-
+For the 5th image, Expected label is Road work (25)
+| label | Image |     Prediction |
+:----|:---------------------:|:-------------------------:|
+| 0.80362 | General caution (18) |
+| 0.182915 | Traffic signals (26) |
+| 0.0131178 | Right-of-way at the next intersection (11) |
+| 0.000192818 | Road work (25) |
+| 0.000129593 | Beware of ice/snow (30) |
 
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
+![alt text][fm-1-input]
 
+![alt text][fm-1-conv1]
+
+![alt text][fm-1-conv2]
+
+
+
+![alt text][fm-4-input]
+
+![alt text][fm-4-conv1]
+
+![alt text][fm-4-conv2]
+
+
+
+![alt text][fm-11-input]
+
+![alt text][fm-11-conv1]
+
+![alt text][fm-11-conv2]
+
+
+![alt text][fm-25-input]
+
+![alt text][fm-25-conv1]
+
+![alt text][fm-25-conv2]
+
+
+
+![alt text][fm-27-input]
+
+![alt text][fm-27-conv1]
+
+![alt text][fm-27-conv2]
