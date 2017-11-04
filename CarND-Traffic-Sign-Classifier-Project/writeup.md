@@ -258,7 +258,7 @@ Further information can be gleamed from the Classification Report generated with
 |42  |     1.00  |    1.00    |  1.00   |     30|
 |avg / total  |     0.93     | 0.93   |   0.93 |     4410
 
-- We can see from this table thelow recall values for Label 40 corresponding to the high number of False Negatives, meaning that many "Roundabout Mandatory" signs are being classified as other signs, and in particular as "Priority Road" (label 12) signs as the Confusion Matrix shows.
+- We can see from this table the low recall values for Label 40 corresponding to the high number of False Negatives, meaning that many "Roundabout Mandatory" signs are being classified as other signs, and in particular as "Priority Road" (label 12) signs as the Confusion Matrix shows.
 - We see the same happening with Class 0 (Speed limit (20km/h), with a very low recall (0.13), whith many signs being predicted as label 4 or "Speed limit (70km/h)". This makes sense as a 2 and a 7 may be easily comfounded, however it might also be due at the low number of label for class 0 (180points) compared with 4 (1750+pts) and data augmentation can help. Furthermore, as this is not happening for the other speed signs (who have well above 1500 points each), we can conclude that the classfier seems to be modeling numbers quite well, a strong testament in favor of using the LeNet Architecture.
 - Additionally, class 20 "Dangerous curve to the right" has a low precision, which shows a high False Positive rate, meaning other classes are being predicted as class 20, as we have seen in the confusion matrix, these are mostly coming from classes 25-30.
 - Another label that has low precision is 29 "Bicycles crossing" has a somewhat low precision score, as it seems many points from label 21 (Double curve) are being predicted as 29.
@@ -306,10 +306,10 @@ Here are the results of the prediction:
 | label | Image			        |     Prediction	        					|
 |:----|:---------------------:|:---------------------------------------------:|
 |1  | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
-| 4  | Speed limit (70km/h)          |  Bumpy Road (22)                      |
 |11  | Right-of-way at the next intersection (11)     			| Right-of-way at the next intersection (11)								|
-|25  | Road work			| Traffic signals (26)      							|
+| 4  | Speed limit (70km/h)          |  Bumpy Road (22)                      |
 |27 | Pedestrians            | Go straight or left (37)                   |
+|25  | Road work      | Traffic signals (26)                    |
 
 The model was able to correctly guess 2 of the 5 traffic signs (see below for details), which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
 
