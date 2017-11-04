@@ -252,7 +252,7 @@ The code for making predictions on my final model is located in the 49th cell of
 For the 1st image, Expected label is Speed limit (30km/h) (1), correct label predicted with very high probability 0.999
 
 | Prob | Label |
-:----|:---------------------:|:-------------------------:|
+|:---------------------:|:-------------------------:|
 **| 0.999408 | Speed limit (30km/h) (1) |**
 | 0.000407973 | Speed limit (20km/h) (0) |
 | 7.7941e-05 | Speed limit (80km/h) (5) |
@@ -262,7 +262,7 @@ For the 1st image, Expected label is Speed limit (30km/h) (1), correct label pre
 For the 2nd image, Expected label is Right-of-way at the next intersection (11), correct label predicted with very high probability 0.998
 
 | Prob | Label |
-:----|:---------------------:|:-------------------------:|
+|:---------------------:|:-------------------------:|
 **| 0.998492 | Right-of-way at the next intersection (11) |**
 | 0.00146018 | Beware of ice/snow (30) |
 | 4.6978e-05 | Double curve (21) |
@@ -272,7 +272,7 @@ For the 2nd image, Expected label is Right-of-way at the next intersection (11),
 For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predict with a medium probability of 0.52, none of the top 5 values predict this label
 
 | Prob | Label |
-:----|:---------------------:|:-------------------------:|
+|:---------------------:|:-------------------------:|
 | 0.529152 | Bumpy road (22) |
 | 0.230067 | Dangerous curve to the right (20) |
 | 0.19349 | Road work (25) |
@@ -282,7 +282,7 @@ For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predi
 For the 4th image, Expected label is Pedestrians (27), wrong label predict with a medium probability of 0.49, none of the top 5 values predict this label
 
 | Prob | Label |
-:----|:---------------------:|:-------------------------:|
+|:---------------------:|:-------------------------:|
 | 0.496878 | Go straight or left (37) |
 | 0.180581 | Stop (14) |
 | 0.115086 | Speed limit (70km/h) (4) |
@@ -292,7 +292,7 @@ For the 4th image, Expected label is Pedestrians (27), wrong label predict with 
 For the 5th image, Expected label is Road work (25), we find the truth label in the top 5 list but with a very low probability
 
 | Prob | Label |
-:----|:---------------------:|:-------------------------:|
+|:---------------------:|:-------------------------:|
 | 0.390784 | Traffic signals (26) |
 | 0.139406 | General caution (18) |
 | 0.120089 | Pedestrians (27) |
