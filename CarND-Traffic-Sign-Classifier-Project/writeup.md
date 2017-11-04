@@ -164,29 +164,32 @@ More detailed description in the following table:
 Layer id | Layer         		|     Description	        					|
 |:----|:---------------------:|:---------------------------------------------:|
 |0 | Input         		| 32x32x3 RGB image   							|
-|1| Convolution 5x5     	| 1x1 stride, same padding, outputs 28x28x6 	|
+|1| Convolution 5x5     	| 1x1 stride, SAME padding, outputs 28x28x6 	|
 |2| RELU					|												|
 |3| Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
-|4| Convolution 5x5	    |  1x1 stride, same padding, outputs 10x10x16       									|
+|4| Convolution 5x5	    |  1x1 stride, SAME padding, outputs 10x10x16       									|
 |5| RELU          |                        |
 |6| Max pooling          | 2x2 stride,  outputs 5x5x16         |
-|7 | flatten | output of layer 2 and layer 6
+|7 | flatten | Use output of layer 2 and 6  |
 |8| Fully connected		| input 5104, output 120       									|
-|9| RELU				| .        									|
+|9| RELU				|         									|
 |10| Dropout		|	keep_prob =0.8											|
-|11|	Fully Connected				|	120x84											|
-|12|  Softmax        |  84*43                      |
+|11|	Fully Connected				|	size=120x84											|
+|12|  Softmax        |  size=84*43                      |
 
 
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used the following parameters
-* learning_rate = 0.001
-* Batch Size = 128
-* Dropout = 0.8
-* Optimizer = Adam
-* n_epoch = 60
+To train the model, I used the following range of parameters (In **black** are the final parameters used)
+* learning_rate = , 0.01, **0.001**, 0.0001
+* stdev  = **0.1**, 0.01, 0.001
+* Batch Size = 64, **128**, 256
+* Dropout = 0.5, **0.8**
+* Optimizer = **Adam**
+* n_epoch = 10, 30, **60**
+
+I also varied the number of units in the Fully Connected Layers as well as the kernel size in the Convolutional layers.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93.
 
@@ -204,7 +207,9 @@ I also visualized the **Confusion Matrix** to see how well the classifier was do
 
 A dark diagonal line shows that the predictor is performing well across all labels. We find some mixed results for labels between 25-30 which are often missclassified with labels from the same group. These correspond to the following categories "Road work", "Traffic signals", "Pedestrians", "Children crossing", "Bicycles crossing", "Beware of ice/snow".
 
-Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road, in other it has a high False Negative rate. Looking at each label's picture shows quite a different kind of sign. Since the distribution of points in the training set is quite low for label 40 (300 labels) compared with 1890 for class 12, an upsampling from label 40 may be helpful. Further more information can be gleamed from the Classification Report generated with scikit-learn (in **black** are highlighted notable low Precision/Recall scores):
+Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road, in other it has a high False Negative rate. Looking at each label's picture shows quite a different kind of sign. Since the distribution of points in the training set is quite low for label 40 (300 labels) compared with 1890 for class 12, an upsampling from label 40 may be helpful.
+
+Further information can be gleamed from the Classification Report generated with scikit-learn (in **black** are highlighted notable low Precision/Recall scores):
 
 | Label |precision  |  recall  | f1-score  | support |
 |:----|:----|:----|:---------------------:|:---------------------------------------------:|
@@ -253,7 +258,10 @@ Another notable thing is that class 40 (Roundabout mandatory) is often predicted
 |42  |     1.00  |    1.00    |  1.00   |     30|
 |avg / total  |     0.93     | 0.93   |   0.93 |     4410
 
-We can see from this table thelow recall values for Label 40 corresponding to the high number of False Negatives, meaning that many "Roundabout Mandatory" signs are being classified as other signs, and in particular as "Priority Road" (label 12) signs as the Confusion Matrix shows. We see the same happening with Class 0 (Speed limit (20km/h), with a very low recall (0.13), whith many signs being predicted as label 4 or "Speed limit (70km/h)". This makes sense as a 2 and a 7 may be easily comfounded, though It may be worthwile looking more at the quality of label 0 in our training set. Furthurmore, as this is not happening for the other speed signs, we can conclude that the classfier seems to be modeling numbers quite well, a strong testament in favor of using the LeNet Architecture. Additionally, class 20 "Dangerous curve to the right" has a low precision, which shows a high False Positive rate, meaning other classes are being predicted as class 20, as we have seen in the confusion matrix, these are mostly coming from classes 25-30. Another label that has low precision is 29 "Bicycles crossing" has a somewhat low precision score, as it seems many points from label 21 (Double curve) are being predicted as 29.
+- We can see from this table thelow recall values for Label 40 corresponding to the high number of False Negatives, meaning that many "Roundabout Mandatory" signs are being classified as other signs, and in particular as "Priority Road" (label 12) signs as the Confusion Matrix shows.
+- We see the same happening with Class 0 (Speed limit (20km/h), with a very low recall (0.13), whith many signs being predicted as label 4 or "Speed limit (70km/h)". This makes sense as a 2 and a 7 may be easily comfounded, however it might also be due at the low number of label for class 0 (180points) compared with 4 (1750+pts) and data augmentation can help. Furthermore, as this is not happening for the other speed signs (who have well above 1500 points each), we can conclude that the classfier seems to be modeling numbers quite well, a strong testament in favor of using the LeNet Architecture.
+- Additionally, class 20 "Dangerous curve to the right" has a low precision, which shows a high False Positive rate, meaning other classes are being predicted as class 20, as we have seen in the confusion matrix, these are mostly coming from classes 25-30.
+- Another label that has low precision is 29 "Bicycles crossing" has a somewhat low precision score, as it seems many points from label 21 (Double curve) are being predicted as 29.
 
 My final model results were:
 * Training set accuracy of 0.986
