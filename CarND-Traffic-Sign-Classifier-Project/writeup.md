@@ -258,7 +258,7 @@ For the 1st image, Expected label is Speed limit (30km/h) (1), correct label pre
 
 ![alt text][test1-predictions]
 
-| Prob | Label |
+| Probability | Label |
 |:---------------------:|:-------------------------:|
 | **0.999408** | **Speed limit (30km/h) (1)** |
 | 0.000407973 | Speed limit (20km/h) (0) |
@@ -270,7 +270,7 @@ For the 2nd image, Expected label is Right-of-way at the next intersection (11),
 
 ![alt text][test11-predictions]
 
-| Prob | Label |
+| Probability | Label |
 |:---------------------:|:-------------------------:|
 | **0.998492** | **Right-of-way at the next intersection (11)** |
 | 0.00146018 | Beware of ice/snow (30) |
@@ -282,7 +282,7 @@ For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predi
 
 ![alt text][test4-predictions]
 
-| Prob | Label |
+| Probability | Label |
 |:---------------------:|:-------------------------:|
 | 0.529152 | Bumpy road (22) |
 | 0.230067 | Dangerous curve to the right (20) |
@@ -294,7 +294,7 @@ For the 4th image, Expected label is Pedestrians (27), wrong label predict with 
 
 ![alt text][test27-predictions]
 
-| Prob | Label |
+| Probability | Label |
 |:---------------------:|:-------------------------:|
 | 0.496878 | Go straight or left (37) |
 | 0.180581 | Stop (14) |
