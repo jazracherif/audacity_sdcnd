@@ -211,7 +211,7 @@ A dark diagonal line shows that we get the predictor is performing well across a
 
 Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road. Looking at each label's picture shows quite a different kind of sign, however, the distribution of points in the training set is quite different, as we have only 300 labels from class 400, and 1890 from class 12. Further more information can be gleamed from the Classification report:
 
-| Label |precision  |  recall  f1-score  | support |
+| Label |precision  |  recall  | f1-score  | support |
 |:----|:----|:----|:---------------------:|:---------------------------------------------:|
 |0   |    0.80   |   0.13   |   0.23   |     30   |
 |1    |   0.90   |   0.93   |   0.91   |    240|
