@@ -198,18 +198,13 @@ Before reaching the above results, I iterated through variation of the architect
 
 Finally, in order to deal with the variance problem and get the validation score up beyong the 0.93 threshold, I added a Dropout layer just after the first Fully Connected layer, with keep_prob = 0.8. This was enough to push the accuracy to 0.94
 
-My final model results were:
-* Training set accuracy of 0.986
-* Validation set accuracy of 0.931
-* Test set accuracy of 0.904
-
-I also visualized the Confusion Matrix to see how well the classified is doing on each label.
+I also visualized the **Confusion Matrix** to see how well the classifier was doing for each label.
 
 ![alt text][confusion-matrix]
 
-A dark diagonal line shows that we get the predictor is performing well across all labels. We find some mixing between classes of labels 25-30 which are often missclassfied between themselves: These correspond to the following categories Road work, Traffic signals, Pedestrians, Children crossing, Bicycles crossing, Beware of ice/snow.
+A dark diagonal line shows that the predictor is performing well across all labels. We find some mixed results for labels between 25-30 which are often missclassified with labels from the same group. These correspond to the following categories "Road work", "Traffic signals", "Pedestrians", "Children crossing", "Bicycles crossing", "Beware of ice/snow".
 
-Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road. Looking at each label's picture shows quite a different kind of sign, however, the distribution of points in the training set is quite different, as we have only 300 labels from class 400, and 1890 from class 12. Further more information can be gleamed from the Classification report:
+Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road, in other it has a high False Negative rate. Looking at each label's picture shows quite a different kind of sign. Since the distribution of points in the training set is quite low for label 40 (300 labels) compared with 1890 for class 12, an upsampling from label 40 may be helpful. Further more information can be gleamed from the Classification Report generated with scikit-learn (in **black** are highlighted notable low Precision/Recall scores):
 
 | Label |precision  |  recall  | f1-score  | support |
 |:----|:----|:----|:---------------------:|:---------------------------------------------:|
@@ -233,7 +228,7 @@ Another notable thing is that class 40 (Roundabout mandatory) is often predicted
 |17  |     0.98 |     1.00   |   0.99   |    120|
 |18  |     0.93 |     0.94   |   0.94    |   120|
 |19  |     0.86 |     0.83   |   0.85    |    30|
-|20  |     0.67 |     **0.57**   |   0.61   |     60|
+|20  |     **0.67** |     **0.57**   |   0.61   |     60|
 |21  |     0.97 |     **0.60**   |   0.74   |     60|
 |22  |     0.97 |     **0.62**   |   0.76   |     60|
 |23  |     0.82  |    0.93   |   0.87   |     60|
@@ -256,10 +251,16 @@ Another notable thing is that class 40 (Roundabout mandatory) is often predicted
 |40  |     0.94  |    **0.57**    |  0.71   |     60|
 |41  |     1.00  |    0.93    |  0.97   |     30|
 |42  |     1.00  |    1.00    |  1.00   |     30|
+|avg / total  |     0.93     | 0.93   |   0.93 |     4410
 
-avg / total       0.93      0.93      0.93      4410
+We can see from this table thelow recall values for Label 40 corresponding to the high number of False Negatives, meaning that many "Roundabout Mandatory" signs are being classified as other signs, and in particular as "Priority Road" (label 12) signs as the Confusion Matrix shows. We see the same happening with Class 0 (Speed limit (20km/h), with a very low recall (0.13), whith many signs being predicted as label 4 or "Speed limit (70km/h)". This makes sense as a 2 and a 7 may be easily comfounded, though It may be worthwile looking more at the quality of label 0 in our training set. Furthurmore, as this is not happening for the other speed signs, we can conclude that the classfier seems to be modeling numbers quite well, a strong testament in favor of using the LeNet Architecture. Additionally, class 20 "Dangerous curve to the right" has a low precision, which shows a high False Positive rate, meaning other classes are being predicted as class 20, as we have seen in the confusion matrix, these are mostly coming from classes 25-30. Another label that has low precision is 29 "Bicycles crossing" has a somewhat low precision score, as it seems many points from label 21 (Double curve) are being predicted as 29.
 
-The training set accuracy is very high, meaning that the model is performing very well over the training set. The validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lower than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a problem which may be solved by adding more points to the validation set.
+My final model results were:
+* Training set accuracy of 0.986
+* Validation set accuracy of 0.931
+* Test set accuracy of 0.904
+
+The training set accuracy is very high, meaning that the model is performing all too well over the training set and overfitting it. However, the validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system has a somewhat high variance. The test set error is also lower than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a problem which may be solved by adding more points to the validation set.
 
 As a next step, more can be done to increase the validation set accuracy such as data augmentation and regularization techniques.
 
@@ -302,13 +303,13 @@ Here are the results of the prediction:
 |25  | Road work			| Traffic signals (26)      							|
 |27 | Pedestrians            | Go straight or left (37)                   |
 
-The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
+The model was able to correctly guess 2 of the 5 traffic signs (see below for details), which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
 
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability
 
-The code for making predictions on my final model is located in the 49th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 22nd cell of the Ipython notebook.
 
-For the 1st image, Expected label is Speed limit (30km/h) (1), correct label predicted with very high probability 0.999
+For the 1st image, the expected label is Speed limit (30km/h) (1), and the correct label is predicted with very high probability 0.999
 
 ![alt text][test1-predictions]
 
@@ -320,7 +321,7 @@ For the 1st image, Expected label is Speed limit (30km/h) (1), correct label pre
 | 6.44589e-05 | Speed limit (70km/h) (4) |
 | 3.86881e-05 | Speed limit (50km/h) (2) |
 
-For the 2nd image, Expected label is Right-of-way at the next intersection (11), correct label predicted with very high probability 0.998
+For the 2nd image, the expected label is Right-of-way at the next intersection (11), and the correct label predicted with very high probability 0.998
 
 ![alt text][test11-predictions]
 
@@ -332,7 +333,7 @@ For the 2nd image, Expected label is Right-of-way at the next intersection (11),
 | 5.5106e-07 | Pedestrians (27) |
 | 7.08638e-09 | General caution (18) |
 
-For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predict with a medium probability of 0.52, none of the top 5 values predict this label
+For the 3rd image, the expected label is Speed limit (70km/h) (4), but the wrong label is predicted with a medium probability of 0.52, and none of the top 5 values contain this label
 
 ![alt text][test4-predictions]
 
@@ -344,7 +345,7 @@ For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predi
 | 0.0369606 | Bicycles crossing (29) |
 | 0.00258905 | Go straight or right (36) |
 
-For the 4th image, Expected label is Pedestrians (27), wrong label predict with a medium probability of 0.49, none of the top 5 values predict this label
+For the 4th image, the expected label is Pedestrians (27), but the wrong label is predicted with a medium probability of 0.49, and none of the top 5 values contain this label
 
 ![alt text][test27-predictions]
 
@@ -356,7 +357,7 @@ For the 4th image, Expected label is Pedestrians (27), wrong label predict with 
 | 0.0638486 | Speed limit (30km/h) (1) |
 | 0.0298649 | Traffic signals (26) |
 
-For the 5th image, Expected label is Road work (25), we find the truth label in the top 5 list but with a very low probability
+For the 5th image, the expected label is Road work (25), but the wrong label is predicted with a somewhat low probability of 0.39, and we do find the truth label in the top 5 list but with a very low probability of 0.087
 
 ![alt text][test25-predictions]
 
@@ -372,7 +373,7 @@ For the 5th image, Expected label is Road work (25), we find the truth label in 
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
 Speed limit (20km/h) (1)
-The contours of the signals are nicely captured in the first layer featuremaps
+The contours of the signals are nicely captured in the first layer featuremaps thus indicating the importance given to the contour of the sign and the letters
 
 ![alt text][fm-1-input]
 
@@ -382,7 +383,7 @@ The contours of the signals are nicely captured in the first layer featuremaps
 
 
 Speed limit (70km/h) (4)
-The contours of the signals are nicely captured in the first layer featuremaps
+The contours of the signals are nicely captured in the first layer featuremaps, but the number inside the signal is hazy and lead to the wrong predictions.
 
 ![alt text][fm-4-input]
 
@@ -392,7 +393,7 @@ The contours of the signals are nicely captured in the first layer featuremaps
 
 
 Right-of-way at the next intersection (11)
-The details of the signals are not so clearly captured, and likely higher resolution is needed to capture the complex figure inside the signal
+The contour of the sign are well captured but details inside are a bit hazy, however the model actually predicted this label correctly
 
 ![alt text][fm-11-input]
 
@@ -402,7 +403,7 @@ The details of the signals are not so clearly captured, and likely higher resolu
 
 
 Road work (25)
-Here one can see the difficulty in extracting the signal's information, and we need a higher precision picture to capture the man at work.
+Here one can see the difficulty in extracting the signal's information, and we need a higher precision picture to capture the man at work. The countour are detected but there is also a lot of noise around the sign. The correct label does however show up in the top-5 predictions
 
 ![alt text][fm-25-input]
 
@@ -412,7 +413,7 @@ Here one can see the difficulty in extracting the signal's information, and we n
 
 
 Pedestrians (27)
-Similarly to the previous picture, the details of the man are not as well captured and will make it more challenging for the next layers to learn an invariance
+Similarly to the previous picture, the details of the man are not as well captured and will make it more challenging for the next layers to learn an invariance. The classifier fails here.
 
 ![alt text][fm-27-input]
 
