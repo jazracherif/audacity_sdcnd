@@ -213,30 +213,28 @@ As a next step, more can be done to increase the validation set accuracy such as
 
 Here are five German traffic signs that I found on the web, each of them of different size and next to its its processed version in 32x32 ratio:
 
-Speed limit (30km/h)
+**Speed limit (30km/h)**: The photo is clear and centered
 
 ![alt text][test1] ![alt text][test1-32x32]
 
-Speed limit (70km/h)
+**Speed limit (70km/h)**: The photo is clear but a bit off center
 
 ![alt text][test2] ![alt text][test2-32x32]
 
-Right-of-way at the next intersection
+**Right-of-way at the next intersection**: The photo is hazy as details are lost from downsampling
 
 ![alt text][test3] ![alt text][test3-32x32]
 
-
-Road work
+**Road work**: After downsampling, the photo is more hazy and has a lot of background information, this may affect the quality
 
 ![alt text][test4] ![alt text][test4-32x32]
 
-Pedestrians
+**Pedestrians**: the photo is a bit small, and the signal's information may be hazy
 
 ![alt text][test5] ![alt text][test5-32x32]
 
-The first image might be difficult to classify because ...
 
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set
 
 Here are the results of the prediction:
 
@@ -318,6 +316,7 @@ For the 5th image, Expected label is Road work (25), we find the truth label in 
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
 Speed limit (20km/h) (1)
+The contours of the signals are nicely captured in the first layer featuremaps
 
 ![alt text][fm-1-input]
 
@@ -327,6 +326,7 @@ Speed limit (20km/h) (1)
 
 
 Speed limit (70km/h) (4)
+The contours of the signals are nicely captured in the first layer featuremaps
 
 ![alt text][fm-4-input]
 
@@ -336,6 +336,7 @@ Speed limit (70km/h) (4)
 
 
 Right-of-way at the next intersection (11)
+The details of the signals are not so clearly captured, and likely higher resolution is needed to capture the complex figure inside the signal
 
 ![alt text][fm-11-input]
 
@@ -345,6 +346,7 @@ Right-of-way at the next intersection (11)
 
 
 Road work (25)
+Here one can see the difficulty in extracting the signal's information, and we need a higher precision picture to capture the man at work.
 
 ![alt text][fm-25-input]
 
@@ -354,6 +356,7 @@ Road work (25)
 
 
 Pedestrians (27)
+Similarly to the previous picture, the details of the man are not as well captured and will make it more challenging for the next layers to learn an invariance
 
 ![alt text][fm-27-input]
 
