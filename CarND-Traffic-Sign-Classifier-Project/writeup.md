@@ -1,4 +1,4 @@
-# **Traffic Sign Recognition** 
+# **Traffic Sign Recognition**
 
 **Build a Traffic Sign Recognition Project**
 
@@ -9,7 +9,6 @@ The goals / steps of this project are the following:
 * Use the model to make predictions on new images
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
-
 
 [//]: # (Image References)
 
@@ -29,6 +28,7 @@ The goals / steps of this project are the following:
 [augment3]: ./results/augment3.jpg  "Data Augmentation 3"
 [augment4]: ./results/augment4.jpg  "Data Augmentation 4"
 
+[confusion-matrix]: ./test/confusion-matrix.jpg "Confusion Matrix"
 
 [test1]: ./test/1.jpeg "Traffic Sign 1"
 [test1-32x32]: ./test/1-processed.jpeg "32x32 Traffic Sign 1"
@@ -73,7 +73,7 @@ The goals / steps of this project are the following:
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.
 
-link to my [project code](https://github.com/jazracherif/udacity_sdcnd/blob/master/CarND-Traffic-Sign-Classifier-Project/writeup.md)
+Link to my [project code](https://github.com/jazracherif/udacity_sdcnd/blob/master/CarND-Traffic-Sign-Classifier-Project/writeup.md)
 
 ---
 
@@ -190,11 +190,11 @@ To train the model, I used the following parameters
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93.
 
-I started with the LENET model because it's a simple and proven architecture known to work on small pictures to detect letters and numbers. I first focused on tuning the learning rate as well as the initial variance values. For values of alpha= 0.001 and sigma= 0.1, I was able to get the accuracy on the traning set to be above 0.95, but the Validation accuracy was stuck at 0.89
+I started with the LENET model because it's a simple and proven architecture known to work on small pictures to detect letters and numbers. I first focused on tuning the learning rate as well as the intialization values for the model's parameters. For values of alpha= 0.001 and stdev= 0.1, I was able to get the accuracy on the traning set to be above 0.95, but the validation set accuracy was stuck at 0.89
 
-I then attempt to follow some of the steps mentionned in the  [Lecun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) in particular connecting the convolutional later to the fully connected layer.  This immediately benefited the validation error as well as the training error, which could now reach 0.99.
+I then attempted to follow some of the steps mentionned in the  [Lecun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) in particular connecting the convolutional later to the fully connected layer.  This immediately benefited the validation error as well as the training error, which could now reach 0.99.
 
-Before reaching the above results, I also attempting changing the model, such as adding additional convolution layer as well as expanding the fully connected layer to contain more units, for example 1024x1024. I found that all these models overfit the training set but then did not do as well on the validation set. I therefore went back to the simpler LENET architecture and made the change mentionned above.
+Before reaching the above results, I iterated through variation of the architectures, adding additional convolution layers as well as expanding the fully connected layer to contain more units, for example 1024x1024. I found that all these models overfit the training set but then did not do as well on the validation set. I therefore went back to the simpler LENET architecture and made the change mentionned above.
 
 Finally, in order to deal with the variance problem and get the validation score up beyong the 0.93 threshold, I added a Dropout layer just after the first Fully Connected layer, with keep_prob = 0.8. This was enough to push the accuracy to 0.94
 
@@ -202,6 +202,62 @@ My final model results were:
 * Training set accuracy of 0.986
 * Validation set accuracy of 0.931
 * Test set accuracy of 0.904
+
+I also visualized the Confusion Matrix to see how well the classified is doing on each label.
+
+![alt text][confusion-matrix]
+
+A dark diagonal line shows that we get the predictor is performing well across all labels. We find some mixing between classes of labels 25-30 which are often missclassfied between themselves: These correspond to the following categories Road work, Traffic signals, Pedestrians, Children crossing, Bicycles crossing, Beware of ice/snow.
+
+Another notable thing is that class 40 (Roundabout mandatory) is often predicted to be class 12 Priority road. Looking at each label's picture shows quite a different kind of sign, however, the distribution of points in the training set is quite different, as we have only 300 labels from class 400, and 1890 from class 12. Further more information can be gleamed from the Classification report:
+
+| Label |precision  |  recall  f1-score  | support |
+|:----|:----|:----|:---------------------:|:---------------------------------------------:|
+|0   |    0.80   |   0.13   |   0.23   |     30   |
+|1    |   0.90   |   0.93   |   0.91   |    240|
+|2    |   0.92   |   0.95   |   0.94   |    240|
+|3    |   0.99   |   0.91   |   0.95   |    150|
+|4    |   0.84   |   0.99   |   0.91   |    210|
+|5    |   0.96   |   0.93   |   0.94   |    210|
+|6    |   0.98   |   0.97   |   0.97   |     60|
+|7    |   0.98   |   0.94   |   0.96   |    150|
+|8    |   0.92   |   0.94   |   0.93   |    150
+|9    |   0.98   |   0.99   |   0.98   |    150
+|10  |     1.00 |     1.00   |   1.00   |    210
+|11  |     0.99 |     0.99   |   0.99   |    150
+|12  |     0.88 |     1.00   |   0.93   |    210
+|13  |     0.99 |     0.99   |   0.99   |    240
+|14  |     0.96 |     1.00   |   0.98   |     90|
+|15  |     0.91 |     0.99   |   0.95   |     90|
+|16  |     1.00 |     1.00   |   1.00   |     60|
+|17  |     0.98 |     1.00   |   0.99   |    120|
+|18  |     0.93 |     0.94   |   0.94    |   120|
+|19  |     0.86 |     0.83   |   0.85    |    30|
+|20  |     0.67 |     0.57   |   0.61   |     60|
+|21  |     0.97 |     0.60   |   0.74   |     60|
+|22  |     0.97 |     0.62   |   0.76   |     60|
+|23  |     0.82  |    0.93   |   0.87   |     60|
+|24  |     0.94  |    0.50   |   0.65   |     30|
+|25  |     0.90  |    0.89   |   0.89   |    150|
+|26  |     0.70  |    0.93   |   0.80   |     60|
+|27  |     1.00  |    0.80   |   0.89   |     30|
+|28  |     0.97  |    1.00   |   0.98   |     60|
+|29  |     0.78  |    0.93   |   0.85   |     30|
+|30  |     0.92  |    1.00   |   0.96   |     60|
+|31  |     0.81  |    1.00   |   0.90   |     90|
+|32  |     0.90  |    0.90   |   0.90   |     30|
+|33  |     0.92  |    0.92   |   0.92   |     90|
+|34  |     0.98  |    0.92   |   0.95   |     60|
+|35  |     0.99  |    0.98   |   0.99   |    120|
+|36  |     0.98  |    1.00   |   0.99   |     60|
+|37  |     0.97  |    1.00   |   0.98   |     30|
+|38  |     0.97  |    0.96   |   0.96   |    210|
+|39  |     0.96  |    0.90    |  0.93   |     30|
+|40  |     0.94  |    0.57    |  0.71   |     60|
+|41  |     1.00  |    0.93    |  0.97   |     30|
+|42  |     1.00  |    1.00    |  1.00   |     30|
+
+avg / total       0.93      0.93      0.93      4410
 
 The training set accuracy is very high, meaning that the model is performing very well over the training set. The validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lower than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a problem which may be solved by adding more points to the validation set.
 
@@ -225,11 +281,11 @@ Here are five German traffic signs that I found on the web, each of them of diff
 
 ![alt text][test3] ![alt text][test3-32x32]
 
-**Road work**: After downsampling, the photo is more hazy and has a lot of background information, this may affect the quality
+**Road work**: After downsampling, the photo is more hazy and has a lot of background information.
 
 ![alt text][test4] ![alt text][test4-32x32]
 
-**Pedestrians**: the photo is a bit small, and the signal's information may be hazy
+**Pedestrians**: The photo is a bit small, and the signal's information is hazy.
 
 ![alt text][test5] ![alt text][test5-32x32]
 
@@ -363,3 +419,4 @@ Similarly to the previous picture, the details of the man are not as well captur
 ![alt text][fm-27-conv1]
 
 ![alt text][fm-27-conv2]
+
