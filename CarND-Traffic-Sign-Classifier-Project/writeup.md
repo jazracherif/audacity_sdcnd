@@ -181,7 +181,7 @@ To train the model, I used the following parameters
 * Batch Size = 128
 * Dropout = 0.8
 * Optimizer = Adam
-* n_epoch = 50
+* n_epoch = 60
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93.
 
@@ -194,9 +194,9 @@ Before reaching the above results, I also attempting changing the model, such as
 Finally, in order to deal with the variance problem and get the validation score up beyong the 0.93 threshold, I added a Dropout layer just after the first Fully Connected layer, with keep_prob = 0.8. This was enough to push the accuracy to 0.94
 
 My final model results were:
-* Training set accuracy of 0.998
-* Validation set accuracy of  0.940
-* Test set accuracy of 0.916
+* Training set accuracy of 0.986
+* Validation set accuracy of 0.931
+* Test set accuracy of 0.904
 
 The training set accuracy is very high, meaning that the model is performing very well over the training set. The validation set accuracy is also high and meets the target for this exercise. The fact that there is a difference of 5.8% between the two, means that there is room for improvement as the system is overfitting a bit and there is somewhat high variation. The test set error is also lower than the validation set error by 2.4%, which is not a large difference. However the model may be overfitting a little bit on the validation set, a problem which may be solved by adding more points to the validation set.
 
@@ -238,10 +238,10 @@ Here are the results of the prediction:
 | label | Image			        |     Prediction	        					|
 |:----|:---------------------:|:---------------------------------------------:|
 |1  | Speed limit (30km/h)      		| Speed limit (30km/h)   									|
-| 4  | Speed limit (70km/h)          | Keep right                      |
-|11  | Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
-|25  | Road work			| Bumpy road      							|
-|27 | Pedestrians            | General caution                   |
+| 4  | Speed limit (70km/h)          |  Bumpy Road (22)                      |
+|11  | Right-of-way at the next intersection (11)     			| Right-of-way at the next intersection (11)								|
+|25  | Road work			| Traffic signals (26)      							|
+|27 | Pedestrians            | Go straight or left (37)                   |
 
 The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. This does not compare favorably to the accuracy on the test set, which is 0.916.
 
@@ -249,54 +249,60 @@ The model was able to correctly guess 2 of the 5 traffic signs, which gives an a
 
 The code for making predictions on my final model is located in the 49th cell of the Ipython notebook.
 
-For the 1st image, Expected label is Speed limit (30km/h) (1)
-| label | Image |     Prediction |
+For the 1st image, Expected label is Speed limit (30km/h) (1), correct label predicted with very high probability 0.999
+
+| Prob | Label |
 :----|:---------------------:|:-------------------------:|
-| 0.999882 | Speed limit (30km/h) (1) |
-| 0.000117751 | Speed limit (50km/h) (2) |
-| 2.31641e-07 | Speed limit (80km/h) (5) |
-| 6.03377e-08 | Speed limit (20km/h) (0) |
-| 2.28642e-10 | Roundabout mandatory (40) |
+**| 0.999408 | Speed limit (30km/h) (1) |**
+| 0.000407973 | Speed limit (20km/h) (0) |
+| 7.7941e-05 | Speed limit (80km/h) (5) |
+| 6.44589e-05 | Speed limit (70km/h) (4) |
+| 3.86881e-05 | Speed limit (50km/h) (2) |
 
-For the 2nd image, Expected label is Right-of-way at the next intersection (11)
-| label | Image |     Prediction |
+For the 2nd image, Expected label is Right-of-way at the next intersection (11), correct label predicted with very high probability 0.998
+
+| Prob | Label |
 :----|:---------------------:|:-------------------------:|
-| 0.953465 | Right-of-way at the next intersection (11) |
-| 0.0463719 | Beware of ice/snow (30) |
-| 8.602e-05 | Pedestrians (27) |
-| 7.48408e-05 | Double curve (21) |
-| 1.10988e-06 | Slippery road (23) |
+**| 0.998492 | Right-of-way at the next intersection (11) |**
+| 0.00146018 | Beware of ice/snow (30) |
+| 4.6978e-05 | Double curve (21) |
+| 5.5106e-07 | Pedestrians (27) |
+| 7.08638e-09 | General caution (18) |
 
-For the 3rd image, Expected label is Speed limit (70km/h) (4)
-| label | Image |     Prediction |
+For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predict with a medium probability of 0.52, none of the top 5 values predict this label
+
+| Prob | Label |
 :----|:---------------------:|:-------------------------:|
-| 0.841088 | Bumpy road (22) |
-| 0.100677 | Bicycles crossing (29) |
-| 0.0435875 | Wild animals crossing (31) |
-| 0.00754137 | Road work (25) |
-| 0.0020486 | Dangerous curve to the left (19) |
+| 0.529152 | Bumpy road (22) |
+| 0.230067 | Dangerous curve to the right (20) |
+| 0.19349 | Road work (25) |
+| 0.0369606 | Bicycles crossing (29) |
+| 0.00258905 | Go straight or right (36) |
 
-For the 4th image, Expected label is Pedestrians (27)
-| label | Image |     Prediction |
+For the 4th image, Expected label is Pedestrians (27), wrong label predict with a medium probability of 0.49, none of the top 5 values predict this label
+
+| Prob | Label |
 :----|:---------------------:|:-------------------------:|
-| 0.445035 | Go straight or left (37) |
-| 0.214535 | Keep left (39) |
-| 0.1452 | Turn right ahead (33) |
-| 0.101017 | Stop (14) |
-| 0.0624454 | General caution (18) |
+| 0.496878 | Go straight or left (37) |
+| 0.180581 | Stop (14) |
+| 0.115086 | Speed limit (70km/h) (4) |
+| 0.0638486 | Speed limit (30km/h) (1) |
+| 0.0298649 | Traffic signals (26) |
 
-For the 5th image, Expected label is Road work (25)
-| label | Image |     Prediction |
+For the 5th image, Expected label is Road work (25), we find the truth label in the top 5 list but with a very low probability
+
+| Prob | Label |
 :----|:---------------------:|:-------------------------:|
-| 0.80362 | General caution (18) |
-| 0.182915 | Traffic signals (26) |
-| 0.0131178 | Right-of-way at the next intersection (11) |
-| 0.000192818 | Road work (25) |
-| 0.000129593 | Beware of ice/snow (30) |
+| 0.390784 | Traffic signals (26) |
+| 0.139406 | General caution (18) |
+| 0.120089 | Pedestrians (27) |
+**| 0.0872249 | Road work (25) |**
+| 0.0701883 | Road narrows on the right (24) |
 
-
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
+### Visualizing the Neural Network
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+
+Speed limit (20km/h) (1)
 
 ![alt text][fm-1-input]
 
@@ -305,6 +311,7 @@ For the 5th image, Expected label is Road work (25)
 ![alt text][fm-1-conv2]
 
 
+Speed limit (70km/h) (4)
 
 ![alt text][fm-4-input]
 
@@ -313,6 +320,7 @@ For the 5th image, Expected label is Road work (25)
 ![alt text][fm-4-conv2]
 
 
+Right-of-way at the next intersection (11)
 
 ![alt text][fm-11-input]
 
@@ -321,6 +329,8 @@ For the 5th image, Expected label is Road work (25)
 ![alt text][fm-11-conv2]
 
 
+Road work (25)
+
 ![alt text][fm-25-input]
 
 ![alt text][fm-25-conv1]
@@ -328,6 +338,7 @@ For the 5th image, Expected label is Road work (25)
 ![alt text][fm-25-conv2]
 
 
+Pedestrians (27)
 
 ![alt text][fm-27-input]
 
