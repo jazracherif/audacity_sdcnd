@@ -32,18 +32,23 @@ The goals / steps of this project are the following:
 
 [test1]: ./test/1.jpeg "Traffic Sign 1"
 [test1-32x32]: ./test/1-processed.jpeg "32x32 Traffic Sign 1"
+[test1-predictions]: ./test/1-predictions.jpg "Traffic Sign 1 Predictions"
 
 [test2]: ./test/4.jpeg "Traffic Sign 2"
 [test2-32x32]: ./test/4-processed.jpeg "32x32 Traffic Sign 2"
+[test4-predictions]: ./test/4-predictions.jpg "Traffic Sign 1 Predictions"
 
 [test3]: ./test/11.jpeg "Traffic Sign 3"
 [test3-32x32]: ./test/11-processed.jpeg "32x32 Traffic Sign 3"
+[test11-predictions]: ./test/11-predictions.jpg "Traffic Sign 1 Predictions"
 
 [test4]: ./test/25.jpeg "Traffic Sign 4"
 [test4-32x32]: ./test/25-processed.jpeg "32x32 Traffic Sign 4"
+[test25-predictions]: ./test/25-predictions.jpg "Traffic Sign 1 Predictions"
 
 [test5]: ./test/27.jpeg "Traffic Sign 5"
 [test5-32x32]: ./test/27-processed.jpeg "32x32 Traffic Sign 5"
+[test27-predictions]: ./test/27-predictions.jpg "Traffic Sign 1 Predictions"
 
 [fm-1-input]: ./test/activations/1-input.jpg "32x32 Traffic Sign 1 Input"
 [fm-1-conv1]: ./test/activations/1-conv1-feature-map.jpg "32x32 Traffic Sign 1 Conv1"
@@ -251,9 +256,11 @@ The code for making predictions on my final model is located in the 49th cell of
 
 For the 1st image, Expected label is Speed limit (30km/h) (1), correct label predicted with very high probability 0.999
 
+![alt text][test1-predictions]
+
 | Prob | Label |
 |:---------------------:|:-------------------------:|
-**| 0.999408 | Speed limit (30km/h) (1) |**
+| **0.999408** | **Speed limit (30km/h) (1)** |
 | 0.000407973 | Speed limit (20km/h) (0) |
 | 7.7941e-05 | Speed limit (80km/h) (5) |
 | 6.44589e-05 | Speed limit (70km/h) (4) |
@@ -261,15 +268,19 @@ For the 1st image, Expected label is Speed limit (30km/h) (1), correct label pre
 
 For the 2nd image, Expected label is Right-of-way at the next intersection (11), correct label predicted with very high probability 0.998
 
+![alt text][test11-predictions]
+
 | Prob | Label |
 |:---------------------:|:-------------------------:|
-**| 0.998492 | Right-of-way at the next intersection (11) |**
+| **0.998492** | **Right-of-way at the next intersection (11)** |
 | 0.00146018 | Beware of ice/snow (30) |
 | 4.6978e-05 | Double curve (21) |
 | 5.5106e-07 | Pedestrians (27) |
 | 7.08638e-09 | General caution (18) |
 
 For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predict with a medium probability of 0.52, none of the top 5 values predict this label
+
+![alt text][test4-predictions]
 
 | Prob | Label |
 |:---------------------:|:-------------------------:|
@@ -281,6 +292,8 @@ For the 3rd image, Expected label is Speed limit (70km/h) (4), wrong label predi
 
 For the 4th image, Expected label is Pedestrians (27), wrong label predict with a medium probability of 0.49, none of the top 5 values predict this label
 
+![alt text][test27-predictions]
+
 | Prob | Label |
 |:---------------------:|:-------------------------:|
 | 0.496878 | Go straight or left (37) |
@@ -291,12 +304,14 @@ For the 4th image, Expected label is Pedestrians (27), wrong label predict with 
 
 For the 5th image, Expected label is Road work (25), we find the truth label in the top 5 list but with a very low probability
 
+![alt text][test25-predictions]
+
 | Prob | Label |
 |:---------------------:|:-------------------------:|
 | 0.390784 | Traffic signals (26) |
 | 0.139406 | General caution (18) |
 | 0.120089 | Pedestrians (27) |
-**| 0.0872249 | Road work (25) |**
+| **0.0872249** | **Road work (25)** |
 | 0.0701883 | Road narrows on the right (24) |
 
 ### Visualizing the Neural Network
