@@ -315,7 +315,7 @@ The model was able to correctly guess 2 of the 5 traffic signs (see below for de
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability
 
-The code for making predictions on my final model is located in the 22nd cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 22nd cell of the Ipython notebook. Below in **bold** are to highlight whether the correct prediction is in the top-5
 
 For the 1st image, the expected label is Speed limit (30km/h) (1), and the correct label is predicted with very high probability 0.999
 
