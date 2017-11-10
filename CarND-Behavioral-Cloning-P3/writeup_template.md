@@ -40,12 +40,13 @@ My project includes the following files:
 * visualizations.ipynb: contains visualization downsampling code
 
 #### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+
+Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
 ```sh
 python drive.py model.h5
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
@@ -60,9 +61,9 @@ The **test** parameter allows me to run the training logic on a small dataset, a
 
 The **predict** parameter allows me to just run predictions on a small dataset for sainyt check of the code that would be used in the drive.py file
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
 My final model is inspired from the MNIST example model in https://github.com/fchollet/keras/blob/master/examples/mnist_cnn.py
 
@@ -72,27 +73,31 @@ I apply dropout of 0.5 on on of the fully connected layers and 0.25 on the 2nd c
 
 ![alt text][model]
 
-####2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model
 
 The model contains dropout layers in order to reduce overfitting (model.py lines 28, 223).
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 58-85). Data augmentation techniques were used, as well as additional training data around some week spots such as the sharp left turn after the bridge in the first track.
+The model was also trained and validated on different data sets to ensure that the model was not overfitting (code line 58-85).
 
-The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+Data augmentation techniques were used, as well as additional training data around some week spots.
 
-####3. Model parameter tuning
+Finally, the model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+#### 3. Model parameter tuning
 
-####4. Appropriate training data
+The model used an adam optimizer, (model.py line 317) and the learning rate was tuned to achieve best faster convergence.
+
+Further the number of
+
+#### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
 
 For details about how I created the training data, see the next section. 
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. Solution Design Approach
+#### 1. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to ...
 
@@ -108,7 +113,7 @@ The final step was to run the simulator to see how well the car was driving arou
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
-####2. Final Model Architecture
+#### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
@@ -116,7 +121,7 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
+#### 3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
