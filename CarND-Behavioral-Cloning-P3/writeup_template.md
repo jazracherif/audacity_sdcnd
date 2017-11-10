@@ -21,6 +21,8 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
+[model]: ./draw.io-behavioral-cloning.jpg "Model Architecture"
+
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
@@ -68,6 +70,7 @@ I started up by resizing the input into a 64x64 image. I then normalize each pic
 
 I apply dropout of 0.5 on on of the fully connected layers and 0.25 on the 2nd convolutional layer. See the final model below
 
+![alt text][model]
 
 ####2. Attempts to reduce overfitting in the model
 
