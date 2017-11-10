@@ -23,6 +23,11 @@ The goals / steps of this project are the following:
 
 [model]: ./draw.io-behavioral-cloning.jpg "Model Architecture"
 
+[hist1]: ./results/hist_raw_data.jpg "Data Histogram 1"
+[hist2]: ./results/hist_rebalanced.jpg "Data Histogram 2"
+[loss1]: ./results/loss1.jpg" "Loss Function 1"
+[loss2]: ./results/loss2.jpg" "Loss Function 2"
+
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
@@ -69,29 +74,25 @@ My final model is inspired from the MNIST example model in https://github.com/fc
 
 I started up by resizing the input into a 64x64 image. I then normalize each picture to have the input centered at 0 and between -0.5 and 0.5. I then have a convolution layer with 5 kernels of size 3x3, followed by another with MAxPooing. The output is then flattened and run thorugh a fully conntected layer of size 50, followed by another dense layer with output of 1, but no activation.
 
-I apply dropout of 0.5 on on of the fully connected layers and 0.25 on the 2nd convolutional layer. See the final model below
-
-![alt text][model]
+I applied dropout of 0.25 on the 2nd convolutional layer and a dropout of 0.5 on the first fully connected layer.
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 28, 223).
-
-The model was also trained and validated on different data sets to ensure that the model was not overfitting (code line 58-85).
-
-Data augmentation techniques were used, as well as additional training data around some week spots.
-
-Finally, the model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+* The model contains dropout layers in order to reduce overfitting (model.py lines 28, 223).
+* The model was also trained and validated on different data sets to ensure that the model was not overfitting (code line 58-85).
+* Data augmentation techniques were used, as well as additional training data around some week spots.
+* Finally, the model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, (model.py line 317) and the learning rate was tuned to achieve best faster convergence.
-
-Further the number of
+* The model used an adam optimizer and the loss function used is the Maximum Square Error (MSE) (model.py line 317).
+* The learning rate was tuned to achieve faster convergence. Values ranging from 0.01 to 0.000001 were tried to reduce both the training and the validation loss as well as the Mean Square Error.
+* Various initialization functions were also tried for the model parameters, amongst them were the "gloriot_normal" and "he_normal"".
+* Further the number the number of epochs and the batch size were tuned.
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+The Training data consists of data provided for the project as well as data I acquired through unity to better capture certain scenarios. Pre-processing of the data was done to remove bias toward driving straight.
 
 For details about how I created the training data, see the next section. 
 
@@ -99,27 +100,43 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to start with a simple model and make it more complex.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+After having validated the overall software flow with a simple fully connected layer, I started experimenting with various architectures. I attempted different stackings of convolutions layers followed by fully connected layers. I focused mostly on tuning the learning rate, reducing my loss, and then evaluating the model in Unity's autonomous mode. The two architecture I ended up with are the [MNIST example](https://github.com/fchollet/keras/blob/master/examples/mnist_cnn.py) and the [NVIDIA end-to-end model](https://arxiv.org/pdf/1604.07316.pdf). My final model architecture was the simpler of the two which achieved the goal of this assignment, that is driving track 1 satisfactorily.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+Initially, I was working on the raw dataset using just the center image and without data augmentation, and the car would not be able to handle turns. Making the model more complicated did not help with this problem. I therefore resorted to various data augmentation techniques:
+1. Every image in the training set was flipped and its steering angle was negated
+2. The left and right images were also included with the steering corrections such that the left image would need a higher angle and the right image a small angle. A correction value of 0.4 was used
 
-To combat the overfitting, I modified the model so that ...
+After including these techniques, I could see the car properly handling the first turn in track one and getting on the bridge successfully. All worked fine until a second sharp left turn is reached, at which point the car kept going straight into the wilderness.
 
-Then I ... 
+Making the model more complex did not help with this. After a few tries, I finally realized that perhaps i needed more data about sharp turns. I therefore got some more training data and after retraining I could see the car now turning at the second sharp turn. However, the car would still hit the sides and not finished the turn.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+After visualizing the data, i notice a very large number of training point with zero steering angles. See the image below for the data histograms
+![alt text][hist1]
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+I decided to downsample by randomly removing 3/4 of the data points with zero steering angle. The code for this is in visualizations.ipynb. See the results after:
+
+![alt text][hist2]
+
+After downsampling the dataset and then retraining with the MNIST model, I got much better performance. In order to squeeze as much out of the model and run the training faster, i resized each image to 64x64 before feeding it into the normalization step. I got the following loss functions for the training and validation set after 50 epochs
+
+![alt text][loss1]
+
+As I could see that both validation and training error were going down, I continue the training for another 10 steps thank to the "resume" parameter I had implemented. The next plots show the additional decreases in the loss and a plateauing for both indication this was a good stopping point.
+
+![alt text][loss2]
+
+I then proceeded to test this model in Unity where the car successfully drope through the whole track without getting off the road.
+
 
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture
 
-![alt text][image1]
+![alt text][model]
 
 #### 3. Creation of the Training Set & Training Process
 
