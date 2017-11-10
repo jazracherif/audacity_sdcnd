@@ -13,15 +13,15 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
-
 [model]: ./draw.io-behavioral-cloning.jpg "Model Architecture"
+
+[center1]: ./results/center1.jpg "Center Image 1"
+[sharp-center]: ./results/sharp-turn-center_2017_11_08_23_59_27_590.jpg "Sharp Turn Center Image"
+[sharp-left]: ./results/sharp-turn-left_2017_11_08_23_59_27_590.jpg "Sharp Turn Left Image"
+[sharp-right]: ./results/sharp-turn-right_2017_11_08_23_59_27_590.jpg "Sharp Turn Right Image"
+
+[center2]: ./results/center2.jpg "Center Image 2"
+[center2-flipped]: ./results/center2-flipped.jpg "Center Image 2 flipped"
 
 [hist1]: ./results/hist_raw_data.jpg "Data Histogram 1"
 [hist2]: ./results/hist_rebalanced.jpg "Data Histogram 2"
@@ -72,7 +72,7 @@ The **predict** parameter allows me to just run predictions on a small dataset f
 
 My final model is inspired from the MNIST example model in https://github.com/fchollet/keras/blob/master/examples/mnist_cnn.py
 
-I started up by resizing the input into a 64x64 image. I then normalize each picture to have the input centered at 0 and between -0.5 and 0.5. I then have a convolution layer with 5 kernels of size 3x3, followed by another with MAxPooing. The output is then flattened and run thorugh a fully conntected layer of size 50, followed by another dense layer with output of 1, but no activation.
+I started up by resizing the input into a 64x64 image. I then normalize each picture to have the input centered at 0 and between -0.5 and 0.5. I then have a convolution layer with 5 kernels of size 3x3, followed by another with MaxPooling. The output is then flattened and run thorugh a fully conntected layer of size 50, followed by another dense layer with output of 1, but no activation.
 
 I applied dropout of 0.25 on the 2nd convolutional layer and a dropout of 0.5 on the first fully connected layer.
 
@@ -112,10 +112,11 @@ After including these techniques, I could see the car properly handling the firs
 
 Making the model more complex did not help with this. After a few tries, I finally realized that perhaps i needed more data about sharp turns. I therefore got some more training data and after retraining I could see the car now turning at the second sharp turn. However, the car would still hit the sides and not finished the turn.
 
-After visualizing the data, i notice a very large number of training point with zero steering angles. See the image below for the data histograms
+After visualizing the data, i notice a very large number of training point with zero steering angles. See the image below for the data histograms:
+
 ![alt text][hist1]
 
-I decided to downsample by randomly removing 3/4 of the data points with zero steering angle. The code for this is in visualizations.ipynb. See the results after:
+I decided to downsample the training set by randomly removing 3/4 of the data points with zero steering angle, all else remaining. The code for this is in the file visualizations.ipynb. The following plot shows the results after this operation:
 
 ![alt text][hist2]
 
@@ -132,7 +133,17 @@ I then proceeded to test this model in Unity where the car successfully drope th
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 18-24) consisted of the following layers:
+1. Resizing the input into a 64x64 image.
+2. Center each picture around 0 and between -0.5 and 0.5.
+3. Add a convolution layer with 5 kernels of size 3x3
+4. Add a convolution layer with 10 kernels of size 3x3
+5. Add a MaxPooling layer with pool size 2
+6. Add a dropout layer with dropout=0.25
+7. Flatten the output.
+8. Use a fully conntected layer of size 50
+9. Add a dropout layer with dropout=0.5
+10. A fully connected layer with output size 1.
 
 Here is a visualization of the architecture
 
@@ -140,28 +151,22 @@ Here is a visualization of the architecture
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I used the udacity data and recorded one additional lap on track one using center lane driving. Here is an example image of center lane driving:
 
-![alt text][image2]
+![alt text][center1]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I also recorded the vehicle  taking sharp turns a few times.
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+![alt text][sharp-left]
+![alt text][sharp-center]
+![alt text][sharp-right]
 
-Then I repeated this process on track two in order to get more data points.
+To augment the data sat, I also flipped images and angles thinking that this would improve steering away from the road edges.  For example, here is an image that has then been flipped:
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+![alt text][center2]
+![alt text][center2-flipped]
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+After the collection process, including the downsampling, I had 5204 number of data points. I  randomly shuffled the data set and put 20% of the data into a validation set.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 60 as evidenced by loss function plotted.
