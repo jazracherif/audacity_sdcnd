@@ -170,7 +170,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 ![alt text][center2]
 
-**Flipped Image**
+**Flipped Image** (Notice the trees switch sides)
 
 ![alt text][center2-flipped]
 
