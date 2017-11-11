@@ -25,8 +25,8 @@ The goals / steps of this project are the following:
 
 [hist1]: ./results/hist_raw_data.jpg "Data Histogram 1"
 [hist2]: ./results/hist_rebalanced.jpg "Data Histogram 2"
-[loss1]: ./results/loss1.jpg" "Loss Function 1"
-[loss2]: ./results/loss2.jpg" "Loss Function 2"
+[loss1]: ./results/loss1.jpg "Loss Function 1"
+[loss2]: ./results/loss2.jpg "Loss Function 2"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
