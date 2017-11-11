@@ -134,16 +134,19 @@ I then proceeded to test this model in Unity where the car successfully drope th
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of the following layers:
-1. Resizing the input into a 64x64 image.
-2. Center each picture around 0 and between -0.5 and 0.5.
-3. Add a convolution layer with 5 kernels of size 3x3
-4. Add a convolution layer with 10 kernels of size 3x3
-5. Add a MaxPooling layer with pool size 2
-6. Add a dropout layer with dropout=0.25
-7. Flatten the output.
-8. Use a fully conntected layer of size 50
-9. Add a dropout layer with dropout=0.5
-10. A fully connected layer with output size 1.
+
+| Layer |  Description |
+|:---|:------------------|
+| 1 |   Resizing the input into a 64x64 image. |
+|2  |    Center each picture around 0 and between -0.5 and 0.5. |
+|3  |   Add a convolution layer with 5 kernels of size 3x3  |
+|4  |   Add a convolution layer with 10 kernels of size 3x3 |
+|5  |   Add a MaxPooling layer with pool size 2 |
+|6  |   Add a dropout layer with dropout=0.25   |
+|7  |   Flatten the output. |
+|8. |   Use a fully conntected layer of size 50 |
+|9  |   Add a dropout layer with dropout=0.5    |
+|10|   A fully connected layer with output size 1   |
 
 Here is a visualization of the architecture
 
