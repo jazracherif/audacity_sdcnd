@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[calib]: ./output_images/calibration.jpg "calibration Image"
+[calib]: ./output_images/calibration.png "calibration Image"
 [undistorted]: ./output_images/undistorted.png "Undistorted"
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 [warped]: ./output_images/warped.png "Warped picture"
