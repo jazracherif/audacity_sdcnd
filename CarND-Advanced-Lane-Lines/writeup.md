@@ -164,7 +164,7 @@ The **position offset** of the vehicle with respect to the center is calculated 
 2. Then I fit a polynomial line to each set and I calculate the x-value at the bottom of the picture(y=719)
 3. The 2 points calculated correspond to the left and right size of the lane, the center of which is calculated and then compared to the center of the picture itself. See below
     ```python
-    center = (left_pt + right_pt) / 2`
+    center = (left_pt + right_pt) / 2
     offset = (1280/2 - center) * xm_per_pix
     ```
     if the offset is nefative, the car is on the left of the center by a value of the offset in meters.
@@ -184,6 +184,7 @@ I implemented this step in lines 231 through 289 in my code in `code/main.py` in
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
 Here's a [link to my project_video result](./videos/project_video_out.mp4)
+
 Here's a [link to my challenge_video result](./videos/challenge_video_out.mp4)
 
 ---
