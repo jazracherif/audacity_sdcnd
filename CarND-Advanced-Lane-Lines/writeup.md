@@ -21,7 +21,7 @@ The goals / steps of this project are the following:
 
 [calib]: ./output_images/calibration.jpg "calibration Image"
 [undistorted]: ./output_images/undistorted.png "Undistorted"
-[pipeline-out]: ./output_images/pipeline-out.png "Undistorted"
+[pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
@@ -82,7 +82,7 @@ I combine the output of these two transformations in the following way:
 2. Add the result with the yellow_binary image which capture the left yellow line.
 combined_binary[ (yellow_binary==1) | ( (l_binary==1) & (sxbinary_right==1))] = 1
 
-![alt text][pipeline-out.png]
+![alt text][pipeline-out]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
