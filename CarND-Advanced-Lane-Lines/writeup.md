@@ -20,9 +20,9 @@ The goals / steps of this project are the following:
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 [warped]: ./output_images/warped.png "Warped picture"
 [histogram]: ./output_images/histogram.png "Histogram"
-[sliding-window]: /output_images/sliding-window.png "Sliding Window"
-[scatter]: /output_images/scatter.png "Scatter plot"
-[lane-window]: /output_images/lane-window.png "Lane window"
+[sliding-window]: ./output_images/sliding-window.png "Sliding Window"
+[scatter]: ./output_images/scatter.png "Scatter plot"
+[lane-window]: ./output_images/lane-window.png "Lane window"
 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
