@@ -116,8 +116,9 @@ The Lane Detection logic is divided into 2 parts:
         ![alt text][histogram]
     
     3. Run a vertical sliding window around each peak capturing the nonzero pixels around a margin of 120px from the center, and recentering the windown whenver it contains more than 50 points. There are a total of 9 windows each of 720/9=80px height. See an example of this below:
+
         ![alt text][sliding-window]
-        
+
     4. Fit a polynomial line of degree 2 to the points detected for each line.
     5. Update the line's equation coefficients using an exponential moving average with beta=0.5
         ```python
@@ -129,11 +130,14 @@ The Lane Detection logic is divided into 2 parts:
     
 2. In case a lane has been detected, don't run the exhaustive window sliding logic of 1.III but instead search for points close to the previously detected line. The funtion process_next_image() (lane_detection.py: line 258) is called instead and the following steps are executed:
     1. Retrieve each lane's fitted equations and filter points which are within a 100pixel margin from the line's center. The green region in the picture below illustrate the searched window.
+    
         ![alt text][lane-window]
 
     2. To the detected points add an additional set which correspond to the line's equation in order to add robustness (similar to step 1-I).
     3. Concatenate the last 10 sets of points detected and fit a polynomial of degree 2. This is done in update_line_fit() (lane_detection.py: line 7). Below is a scatter plot of the left and right lines captured at the 4th image of the project_video.mp4 file:
+    
         ![alt text][scatter]
+        
     4. Update the current lane coefficient using exponential moving average
     
 
