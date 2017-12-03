@@ -31,7 +31,7 @@ The goals / steps of this project are the following:
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 Relevant Files:
-+ `code/calibrate.py`: Runs calibration on the checkerboad and stores the parameters in  `wide_dist_pickle.p`
++ `code/calibrate.py`: Runs calibration on the checkerboad and stores the parameters in  `code/wide_dist_pickle.p`
 + `code/gradient_threshold.py`: Contians function for the Gradient thresholding logic
 + `code/pipelines.py`: Contains function for the thresholding logic including gradient and color thresholding
 + `code/lane_detection.py`: Contains function for the main procedure for detection lanes, Radius of Curvature, and Vehicle Position
