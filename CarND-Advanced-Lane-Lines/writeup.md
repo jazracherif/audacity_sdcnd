@@ -192,8 +192,8 @@ I implemented this step in lines 231 through 289 in my code in `code/main.py` in
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my project_video result](./videos/project_video_out.mp4)  
-Here's a [link to my challenge_video result](./videos/challenge_video_out.mp4)
+Here's a link to my [project_video result](./videos/project_video_out.mp4)
+Here's a link to my [challenge_video result](./videos/challenge_video_out.mp4)
 
 ---
 
@@ -201,4 +201,20 @@ Here's a [link to my challenge_video result](./videos/challenge_video_out.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+The most difficult part of this project has been lane stabilitzation, particularly as observed in the challenge_video.mp4.
+
+The approach I initially took relied on fitting only data for the current frame and updating the coefficients of the line's equation using exponential moving average. However, as observed in some conditions, the equation can vary a lot and the **beta** parameter may not be enough to smoothen the change. Too small and the shape will change too quickly, too large and it will take too long a time to adapt to changes.
+
+In order to mitigate the shortcomings of the beta parameter, I also added a threshold mechanism, increasing the beta value when the delta changes for the equation's coeffcient became large enough, and even disregarding the change altogether if the delta was above 100x of the last value. I also had different threshold and beta values for each coefficient, however choosing the right thresholds proved difficult as it worked in some conditions but not in others.
+
+In order to resolve this satisfactorily, I ultimatly resolved to maintain a cache of the last 10 observed frames and fit a polynomial on all those points in order to increase robustness. This worked better than the thresholding mechanism. On top of that I combined the current frame observation with points generated using the current fitted line in order to always have a minimum number of points in case nothing is detected in the pictures. This helped deal with cases such as going under the bridge when the lane marking become too dark to be detected.
+
+I've also introduced a fallback mechanism in case the lane detection fails by falling back to finding the lanes using the vertical sliding window logic.
+
+More work needs to be done to make this module more robust, in particular:
++ The left mark is currently expected to be a yellow line and this must be improved for middle and right lanes situations.
++ Test in different lighting conditions: The system may fail in the dark
++ Test on windy road and evaluate how quickly the system is able to follow the curves
+
+
+
