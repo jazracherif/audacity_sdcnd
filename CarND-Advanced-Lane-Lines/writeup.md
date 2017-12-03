@@ -23,6 +23,7 @@ The goals / steps of this project are the following:
 [undistorted]: ./output_images/undistorted.png "Undistorted"
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 [warped]: ./output_images/warped.png "Warped picture"
+[warped]: ./output_images/histogram.png "Histogram"
 
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
@@ -101,9 +102,16 @@ I verified that my perspective transform was working as expected by drawing the 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+The lane identication logic is implemented in file "/code/lane_detection.py". The logic is divided into 2 path:
+1. When the data is new or there is a problem with the previous detection logic, a call to find_lanes() (line 117) is made. This function takes as input the warped image and then applies the following logic:
 
-![alt text][image5]
+a) If previous lane data is available, generate a set of point that fit the line and add that to the picture. This create a simple continuity and availablility of data
+`ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
+fitx = (current_fit.a*ploty**2 + current_fit.b*ploty + current_fit.c).astype(int)`
+
+b) Create a histogram the number of pixels points at each x location, and find the leftmost and rightmost peaks. These peaks should correspond to the left and right line of the current lane. See an example below:
+
+![alt text][histogram]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
