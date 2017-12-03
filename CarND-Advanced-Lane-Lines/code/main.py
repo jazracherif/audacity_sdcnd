@@ -52,10 +52,6 @@ class movingAvg():
             self.c = c
             self.t = 1
             return np.asarray([self.a, self.b, self.c])
-    
-#        delta_a = ((a-self.a)/self.a)
-#        delta_b = ((b-self.b)/self.b)
-#        delta_c = ((c-self.c)/self.c)
 
         self.t +=1
 
@@ -66,6 +62,10 @@ class movingAvg():
         return np.asarray([self.a, self.b, self.c])
 
 
+
+#        delta_a = ((a-self.a)/self.a)
+#        delta_b = ((b-self.b)/self.b)
+#        delta_c = ((c-self.c)/self.c)
 #        # Large changes to the lane's equation are not expected.
 #        if delta_a > 10 or delta_b > 10 or delta_c > 10:
 #            print ("a={}->{}, b={}->{}, c={}->{}".format(self.a,a,self.b, b,self.c,c))
@@ -142,7 +142,7 @@ def process_image(image):
 
     h, w, c = image.shape
     
-    PLOT = True
+    PLOT = False
 #    if index < 110:
 #        return image
 
@@ -192,10 +192,7 @@ def process_image(image):
     """
         Generate Perspective
     """
-#    src = np.float32([ [600, 470], [800, 470], [1150, 720],  [200, 720]])
     src = np.float32([ [550, 470], [800, 470], [1150, 710],  [180, 710]])
-
-#    dst = np.float32([[0, 0],[1280, 0], [1280, 720], [0, 720]])
     dst = np.float32([[0, 0],[w, 0], [w, h], [0, h]])
 
     M = cv2.getPerspectiveTransform(src, dst)
@@ -223,7 +220,6 @@ def process_image(image):
             print ("Sanity Check Fail", left_line.detected, left_line.detected, left_line.radius_of_curvature, right_line.radius_of_curvature)
             
             ploty, left_line, right_line, offset = lane_detection.find_lanes(warped, index=index, left_line=left_line, right_line=right_line, PLOT=True)
-
 
     """
         Draw lane on the image
@@ -267,9 +263,9 @@ def process_image(image):
 #            lineType=8)
 
     if offset > 0:
-        off="left"
-    else:
         off="right"
+    else:
+        off="left"
 
     cv2.putText(result,
             "Vehicle is {:0.2f}m {} of center".format(abs(offset), off),
@@ -279,36 +275,40 @@ def process_image(image):
             color=(255,255,255),
             thickness=3,
             lineType=8)
-#    plt.text(700,-30, "right_radius={:0.2f}m".format(right_radius))
 
-    if True:
+    if PLOT:
         plt.figure()
         plt.imshow(result)
         plt.savefig('./out/picture-'+str(index)+'-final-out.png')
 
     return result
 
+TEST = False
+
 FILE = "../videos/project_video.mp4"
-FILE_OUT = "./out/project_video.mp4"
+FILE_OUT = "./out/project_video_out.mp4"
 
+#FILE = "../videos/challenge_video.mp4"
+#FILE_OUT = "./out/challenge_video_out.mp4"
+
+# Load the calibration parameters
 dist_pickle = pickle.load( open('./wide_dist_pickle.p', 'rb'))
-
 mtx = dist_pickle["mtx"]
 dist = dist_pickle["dist"]
 
+# Create the left and right line of the lane.
 left_line = Line("LEFT")
 right_line = Line("RIGHT")
 
-TEST = False
 if TEST:
     image = cv2.imread('./frames/picture-370.png')
     process_image(image)
     image = cv2.imread('./frames/picture-371.png')
     process_image(image)
-
 else:
+    # MAIN ENTRY POINT
     clip = VideoFileClip(FILE)
-    white_clip = clip.fl_image(process_image) #NOTE: this function expects color images!!
+    white_clip = clip.fl_image(process_image)
     white_clip.write_videofile(FILE_OUT, audio=False)
 
 
