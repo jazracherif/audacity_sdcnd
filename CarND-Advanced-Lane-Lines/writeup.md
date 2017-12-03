@@ -57,7 +57,7 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 #### 1. Provide an example of a distortion-corrected image.
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
+To demonstrate this step, I applied the distortion correction to one of the test images like this one:
 ![alt text][undistorted]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
@@ -77,17 +77,19 @@ Gradient Threshold transforms (combined_thresh() in `code/gradient_threshold.py:
 3. Apply a direction of gradient thresholding with angle threshold between 0.7 and 1.3
 4. **sxbinary**: Combine all 3 previous operation with an OR operations
 
-I combine the output of these two transformations in the following way:
-1. Use the right part of the Gadient Threshold and AND it with the l_binary output
-2. Add the result with the yellow_binary image which capture the left yellow line.
+I combined the output of these two transformations in the following way:
+1. Use the right part of the Gradient Threshold and AND it with the l_binary output
+2. OR the result with the yellow_binary image which captures the left yellow line.
 
-`combined_binary[(yellow_binary==1) | ((l_binary==1) & (sxbinary_right==1))] = 1`
-
+```python
+combined_binary = np.zeros_like(sxbinary)
+combined_binary[(yellow_binary==1) | ((l_binary==1) & (sxbinary_right==1))] = 1`
+```
 ![alt text][pipeline-out]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform appear in line 194-201 in `main.py`. I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform appear in line 195-202 in `main.py`. I chose the hardcode the source and destination points in the following manner:
 
 ```python
 src = np.float32([ [550, 470], [800, 470], [1150, 710],  [180, 710]])
@@ -100,15 +102,15 @@ I verified that my perspective transform was working as expected by drawing the 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-The lane identication logic is implemented in file `code/lane_detection.py` and is called from within the process_image() function at lines 215-226
+The lane identication logic is implemented in file `code/lane_detection.py` and is called from within the process_image() function at lines 212-222
 
 2 additional classes were defined to help with this:
 
-a  Line class to help maintain past information about the left and right lines that forms the lane:
+A class to help maintain past information about the left and right lines that forms the lane:
 ```python
 class Line()  #(main.py:line 90)
 ```
-a class that implements exponential moving average to be applied to each of the lines polynomial coeffcients (a,b, and c in a.x^2 + b.x +c)
+A class that implements exponential moving average to be applied to each of the lines polynomial coeffcients (a,b, and c in a.x^2 + b.x +c)
 ```python
 class movingAvg() #(main.py:line 11)
 ```
