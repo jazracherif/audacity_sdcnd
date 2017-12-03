@@ -24,7 +24,9 @@ The goals / steps of this project are the following:
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 [warped]: ./output_images/warped.png "Warped picture"
 [histogram]: ./output_images/histogram.png "Histogram"
-
+[sliding-window]: /output_images/sliding-window.png "Sliding Window"
+[scatter]: /output_images/scatter.png "Scatter plot"
+[lane-window]: /output_images/lane-window.png "Lane window"
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
@@ -108,27 +110,44 @@ The lane identication logic is implemented in file "/code/lane_detection.py" and
 
 a  Line class to help maintain past information about the left and right lines that forms the lane:
 ```python
-class Line()  (main.py:line 90)
+class Line()  #(main.py:line 90)
 ```
 a class that implements exponential moving average to be applied to each of the lines polynomial coeffcients (a,b, and c in a.x^2 + b.x +c)
 ```python
-class movingAvg() (main.py:line 11)
+class movingAvg() #(main.py:line 11)
 ```
 The Lane Detection logic is divided into 2 parts:
-1. When the data is new or there is a problem with the previous detection logic, a call to find_lanes() (line 117) is made. This function takes as input the warped image and then applies the following logic:
-
-    1. If previous lane data is available, generate a set of point that fit the line and add that to the picture. This create a simple continuity and availablility of data.
+1. For the first image or whenever a problem is detected with the previous image, a call to find_lanes() (line 117) is made. This function takes as input the warped image and then applies the following logic:
+    1. If previous lane data is available, generate a set of point that fit the line and add that to the warped picture. This create a simple continuity and availablility of data.
         ```python
         ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
         fitx = (current_fit.a*ploty**2 + current_fit.b*ploty + current_fit.c).astype(int)
         ```
-    2. Create a histogram the number of pixels points at each x location, and find the leftmost and rightmost peaks. These peaks should correspond to the left and right line of the current lane. See an example below:
+    2. Create a histogram of the number of nonzero pixels at each x location, and find the leftmost and rightmost peaks. These peaks will correspond to the left and right line of the current lane. See an example below:
 
-    ![alt text][histogram]
+        ![alt text][histogram]
     
-    3. Run a sliding window around each peak capturing the nonzero pixels around a margin of 100px from the center. There are a total of 9 windows each of 720/9=80px height.
-    4. Fit a polynomial line of degree 2 to each line points detected.
-    5. Update the line equation coefficients using an exponential moving average
+    3. Run a vertical sliding window around each peak capturing the nonzero pixels around a margin of 120px from the center, and recentering the windown whenver it contains more than 50 points. There are a total of 9 windows each of 720/9=80px height. See an example of this below:
+        ![alt][sliding-window]
+        
+    4. Fit a polynomial line of degree 2 to the points detected for each line.
+    5. Update the line's equation coefficients using an exponential moving average with beta=0.5
+        ```python
+        self.a = (self.beta_a * self.a + (1 - self.beta_a) * a )
+        self.b = (self.beta_b * self.b + (1 - self.beta_b) * b )
+        self.c = (self.beta_c * self.c + (1 - self.beta_c) * c )
+        ```
+    6. Store the line information using function update_line_info() (lane_detection.py: line 27)
+    
+2. In case a lane has been detected, don't run the exhaustive window sliding logic of 1.III but instead search for points close to the previously detected line. The funtion process_next_image() (lane_detection.py: line 258) is called instead and the following steps are executed:
+    1. Retrieve each lane's fitted equations and filter points which are within a 100pixel margin from the line's center. The green region in the picture below illustrate the searched window.
+        ![alt][lane-window]
+
+    2. To the detected points add an additional set which correspond to the line's equation in order to add robustness (similar to step 1-I).
+    3. Concatenate the last 10 sets of points detected and fit a polynomial of degree 2. This is done in update_line_fit() (lane_detection.py: line 7). Below is a scatter plot of the left and right lines captured at the 4th image of the project_video.mp4 file:
+        ![alt][scatter]
+    4. Update the current lane coefficient using exponential moving average
+    
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
