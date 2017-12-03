@@ -22,6 +22,7 @@ The goals / steps of this project are the following:
 [calib]: ./output_images/calibration.jpg "calibration Image"
 [undistorted]: ./output_images/undistorted.png "Undistorted"
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
+[warped]: ./output_images/warped.png "Warped picture"
 
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
@@ -66,10 +67,10 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 The function pipeline() (pipelines.py line 41) runs the undistorded image into both a color and a gradient threshold transformation before combining them:
 
-Color Transofrms:
+Color Transoforms (line 53 - 62 pipelines.py):
 1. Transform the undistored image from RGB to HLS
-2. **yellow_binary**: Run a color threshold on the H channel to capture the yellow line. (H=19)
-3. **l_binary**: Run a threholding on the L channel to keep light parts of the picture, filtering anything below  (L >160)
+2. **yellow_binary**: the output of a color threshold on the H channel, done to capture the yellow line. (H=19)
+3. **l_binary**: the output of a threholding on the L channel to keep lighter parts of the picture, filtering anything below 160.
 
 Gradient Threshold transforms (combined_thresh() in gradient_threshold.py line 133):
 1. Run a sobel operation on both x and y axis with kernel size 5 and threhols 20,100
@@ -80,39 +81,23 @@ Gradient Threshold transforms (combined_thresh() in gradient_threshold.py line 1
 I combine the output of these two transformations in the following way:
 1. Use the right part of the Gadient Threshold and AND it with the l_binary output
 2. Add the result with the yellow_binary image which capture the left yellow line.
-combined_binary[ (yellow_binary==1) | ( (l_binary==1) & (sxbinary_right==1))] = 1
+
+`combined_binary[ (yellow_binary==1) | ( (l_binary==1) & (sxbinary_right==1))] = 1`
 
 ![alt text][pipeline-out]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform appear in line 194-201 in main.py. I chose the hardcode the source and destination points in the following manner:
 
 ```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+src = np.float32([ [550, 470], [800, 470], [1150, 710],  [180, 710]])
+dst = np.float32([[0, 0],[1280, 0], [1280, 720], [0, 720]])
 ```
-
-This resulted in the following source and destination points:
-
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+![alt text][warped]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
