@@ -56,7 +56,7 @@ class movingAvg():
 #        delta_a = ((a-self.a)/self.a)
 #        delta_b = ((b-self.b)/self.b)
 #        delta_c = ((c-self.c)/self.c)
-        
+
         self.t +=1
 
         self.a = (self.beta_a * self.a + (1 - self.beta_a) * a )

@@ -124,6 +124,11 @@ def find_lanes(binary_warped, left_line, right_line, PLOT=False, index=0):
     if PLOT:
         plt.figure()
         plt.plot(histogram)
+        
+        plt.xlabel("x pixel")
+        plt.ylabel("#pixels")
+        plt.title("Histogram of pixels at each x location")
+
         plt.savefig('./out/picture-'+str(index)+'-lane-histogram')
 
     # Create an output image to draw on and visualize the result
