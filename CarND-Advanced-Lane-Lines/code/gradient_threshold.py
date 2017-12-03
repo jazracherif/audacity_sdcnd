@@ -131,10 +131,11 @@ def test_dir_thresh(image, PLOT=False):
 
 
 def combined_thresh(image, PLOT=False):
-    # RUN COMBINED
+    """
+        Runs a combination of thresholding algorithms 
+    """
     ksize = 5 # Choose a larger odd number to smooth gradient measurements
 
-#    print ("Kernel Size", ksize)
     gradx = abs_sobel_thresh(image, orient='x', sobel_kernel=ksize, thresh=(20, 100))
     grady = abs_sobel_thresh(image, orient='y', sobel_kernel=ksize, thresh=(20, 100))
     
@@ -144,7 +145,6 @@ def combined_thresh(image, PLOT=False):
     combined = np.zeros_like(dir_binary)
     combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
     
-    PLOT = False
     if PLOT:
         f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
         f.tight_layout()

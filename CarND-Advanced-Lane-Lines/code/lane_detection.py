@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 
-
 def update_line_fit(line, lefty, leftx):
-    
-    print ("cached pts", len(line.recent_xfitted))
+    """
+        Run a polyfit on the last 10 batches of data that
+        form the detected lines.
+    """
     line.recent_xfitted.append(leftx)
     line.recent_yfitted.append(lefty)
     
@@ -18,13 +19,8 @@ def update_line_fit(line, lefty, leftx):
     x = np.concatenate(line.recent_xfitted)
     y = np.concatenate(line.recent_yfitted)
 
-    print (x.shape, y.shape)
     fit = np.polyfit(y, x, 2)
 
-    updated_fit = line.current_fit.update(fit)
-    return updated_fit
-
-def update_line_fit2(line, fit):
     updated_fit = line.current_fit.update(fit)
     return updated_fit
 
@@ -43,16 +39,9 @@ def update_line_info(line,
     MAX_ITEMS = 10
     line.detected = detected
     
-#    line.recent_xfitted.insert(0, x)
-#    if line.recent_xfitted == MAX_ITEMS:
-#        line.recent_xfitted.pop()
-
     line.diffs = fit - line.current_fit.val()
-
     line.fit_pts = fit_pts
-
     line.radius_of_curvature = roc
-    
     line.allx = x
     line.ally = y
     print (line)
@@ -72,7 +61,9 @@ def get_distance_from_center(left_lane, right_lane):
 
     center = (left_pt + right_pt) / 2
     
-    # Return offset from center
+    # Return offset from center of the lane
+    # if offset < 0 -> car is on the left of the center
+    # if offset > 0 -> car is on the right of the center
     offset = (1280/2 - center) * xm_per_pix
     
     return offset
@@ -124,13 +115,7 @@ def overlap_current_lane(binary_warped, lane):
     return binary_warped
 
 def find_lanes(binary_warped, left_line, right_line, PLOT=False, index=0):
-
     print ("find_lanes()")
-
-#    plt.figure()
-#    plt.imshow(np.dstack((binary_warped, binary_warped, binary_warped))*255)
-#    plt.savefig('./out/picture-'+str(index)+'-before.png')
-
     binary_warped = overlap_current_lane(binary_warped, right_line)
     binary_warped = overlap_current_lane(binary_warped, left_line)
 
@@ -144,9 +129,6 @@ def find_lanes(binary_warped, left_line, right_line, PLOT=False, index=0):
     # Create an output image to draw on and visualize the result
     out_img = np.dstack((binary_warped, binary_warped, binary_warped))*255
 
-#    plt.figure()
-#    plt.imshow(out_img)
-#    plt.savefig('./out/picture-'+str(index)+'-after.png')
 
     # Find the peak of the left and right halves of the histogram
     # These will be the starting point for the left and right lines
@@ -216,10 +198,7 @@ def find_lanes(binary_warped, left_line, right_line, PLOT=False, index=0):
     rightx = nonzerox[right_lane_inds]
     righty = nonzeroy[right_lane_inds]
 
-    # Fit a second order polynomial to
-#    left_fit = update_line_fit(left_line, np.polyfit(lefty, leftx, 2))
-#    right_fit = update_line_fit(right_line, np.polyfit(righty, rightx, 2))
-
+    # Fit a second order polynomial and update the line data structure
     left_fit = update_line_fit(left_line, lefty, leftx)
     right_fit = update_line_fit(right_line, righty, rightx)
 
@@ -279,12 +258,10 @@ def process_next_image(binary_warped, ploty, left_line, right_line, index=0, PLO
         binary_warped: The warped image after change of perspective
         
     """
-    
     print ("process_next_image()")
     
     left_fit = left_line.current_fit.val()
     right_fit = right_line.current_fit.val()
-    
     
     nonzero = binary_warped.nonzero()
     nonzeroy = np.array(nonzero[0])
@@ -306,7 +283,6 @@ def process_next_image(binary_warped, ploty, left_line, right_line, index=0, PLO
     righty = nonzeroy[right_lane_inds]
     # Fit a second order polynomial to each
     
-    
     # Add previous fit line for robusteness
     ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
     curr_left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
@@ -319,7 +295,6 @@ def process_next_image(binary_warped, ploty, left_line, right_line, index=0, PLO
     righty = np.concatenate([righty, ploty])
 
     try:
-#        left_fit = update_line_fit(left_line, np.polyfit(lefty, leftx, 2))
         left_fit = update_line_fit(left_line, lefty, leftx)
 
     except:
@@ -335,7 +310,6 @@ def process_next_image(binary_warped, ploty, left_line, right_line, index=0, PLO
         return None, left_line, right_line, 0
 
     try:
-#        right_fit = update_line_fit(right_line, np.polyfit(righty, rightx, 2))
         right_fit = update_line_fit(right_line, righty, rightx)
 
     except:
@@ -370,7 +344,6 @@ def process_next_image(binary_warped, ploty, left_line, right_line, index=0, PLO
 
     # Get Radius of Curvature
     left_radius, right_radius = get_radius(left_line, right_line)
-#    print ("next image - left radius={:0.02f}, right radius={:0.02f}".format(left_radius, right_radius))
 
     # Get Distance from center:
     offset = get_distance_from_center(left_line, right_line)

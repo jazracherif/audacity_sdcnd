@@ -53,9 +53,9 @@ class movingAvg():
             self.t = 1
             return np.asarray([self.a, self.b, self.c])
     
-        delta_a = ((a-self.a)/self.a)
-        delta_b = ((b-self.b)/self.b)
-        delta_c = ((c-self.c)/self.c)
+#        delta_a = ((a-self.a)/self.a)
+#        delta_b = ((b-self.b)/self.b)
+#        delta_c = ((c-self.c)/self.c)
         
         self.t +=1
 
@@ -66,25 +66,25 @@ class movingAvg():
         return np.asarray([self.a, self.b, self.c])
 
 
-        # Large changes to the lane's equation are not expected.
-        if delta_a > 10 or delta_b > 10 or delta_c > 10:
-            print ("a={}->{}, b={}->{}, c={}->{}".format(self.a,a,self.b, b,self.c,c))
-            print ("{} lane, Very Large Change, disregard - delta_a:{} delta_b:{} delta_c:{}".format(self.name, delta_a, delta_b, delta_c))
-            return np.asarray([self.a, self.b, self.c])
-        elif delta_a > 1 or delta_b > 1 or delta_c > 1:
-            print ("Large {} Line Change - delta_a:{} delta_b:{} delta_c:{}".format(self.name, delta_a, delta_b, delta_c))
-            beta_a = beta_b = beta_c = 0.99
-            
-            self.a = (beta_a * self.a + (1 - beta_a) * a )
-            self.b = (beta_b * self.b + (1 - beta_b) * b )
-            self.c = (beta_c * self.c + (1 - beta_c) * c )
-            
-            return np.asarray([self.a, self.b, self.c])
-        else:
-            self.a = (self.beta_a * self.a + (1 - self.beta_a) * a )
-            self.b = (self.beta_b * self.b + (1 - self.beta_b) * b )
-            self.c = (self.beta_c * self.c + (1 - self.beta_c) * c )
-            return np.asarray([self.a, self.b, self.c])
+#        # Large changes to the lane's equation are not expected.
+#        if delta_a > 10 or delta_b > 10 or delta_c > 10:
+#            print ("a={}->{}, b={}->{}, c={}->{}".format(self.a,a,self.b, b,self.c,c))
+#            print ("{} lane, Very Large Change, disregard - delta_a:{} delta_b:{} delta_c:{}".format(self.name, delta_a, delta_b, delta_c))
+#            return np.asarray([self.a, self.b, self.c])
+#        elif delta_a > 1 or delta_b > 1 or delta_c > 1:
+#            print ("Large {} Line Change - delta_a:{} delta_b:{} delta_c:{}".format(self.name, delta_a, delta_b, delta_c))
+#            beta_a = beta_b = beta_c = 0.99
+#
+#            self.a = (beta_a * self.a + (1 - beta_a) * a )
+#            self.b = (beta_b * self.b + (1 - beta_b) * b )
+#            self.c = (beta_c * self.c + (1 - beta_c) * c )
+#
+#            return np.asarray([self.a, self.b, self.c])
+#        else:
+#            self.a = (self.beta_a * self.a + (1 - self.beta_a) * a )
+#            self.b = (self.beta_b * self.b + (1 - self.beta_b) * b )
+#            self.c = (self.beta_c * self.c + (1 - self.beta_c) * c )
+#            return np.asarray([self.a, self.b, self.c])
 
 
 class Line():
@@ -140,6 +140,8 @@ def process_image(image):
     global index
     index += 1
 
+    h, w, c = image.shape
+    
     PLOT = True
 #    if index < 110:
 #        return image
@@ -192,7 +194,9 @@ def process_image(image):
     """
 #    src = np.float32([ [600, 470], [800, 470], [1150, 720],  [200, 720]])
     src = np.float32([ [550, 470], [800, 470], [1150, 710],  [180, 710]])
-    dst = np.float32([[0, 0],[1280, 0], [1280, 720], [0, 720]])
+
+#    dst = np.float32([[0, 0],[1280, 0], [1280, 720], [0, 720]])
+    dst = np.float32([[0, 0],[w, 0], [w, h], [0, h]])
 
     M = cv2.getPerspectiveTransform(src, dst)
     Minv = cv2.getPerspectiveTransform(dst, src)
@@ -208,8 +212,6 @@ def process_image(image):
     """
         Detect Lanes
     """
-#    ploty, left_line, right_line = lane_detection.find_lanes(warped, index=index, left_line=left_line, right_line=right_line, PLOT=False)
-
     if ploty is None:
         ploty, left_line, right_line, offset = lane_detection.find_lanes(warped, index=index, left_line=left_line, right_line=right_line, PLOT=PLOT)
     else:
