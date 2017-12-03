@@ -3,7 +3,7 @@ import cv2
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import pickle
-import color_tresh
+import pipelines
 import gradient_threshold
 import numpy as np
 import lane_detection
@@ -164,23 +164,25 @@ def process_image(image):
     """
         Run the Thresholding algorithm
     """
-    color_binary, combined_binary = color_tresh.pipeline(undist_rgb)
+    color_binary, combined_binary = pipelines.pipeline(undist_rgb)
 
     # Plot the result
     if PLOT:
         plt.figure()
-        f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 9))
+        
+        f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
         f.tight_layout()
+        f.suptitle("Color and Gradient Thresholding Results", fontsize=30)
 
         ax1.imshow(undist_rgb)
-        ax1.set_title('Original Image', fontsize=40)
+        ax1.set_title('Undistorted Image', fontsize=20)
 
-        ax2.imshow(color_binary)
-        ax2.set_title('Color Binary', fontsize=40)
-        plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+#        ax2.imshow(color_binary)
+#        ax2.set_title('Color Binary', fontsize=40)
+#        plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
 
-        ax3.imshow(combined_binary, cmap="gray")
-        ax3.set_title('Combined', fontsize=40)
+        ax2.imshow(combined_binary, cmap="gray")
+        ax2.set_title('Pipeline Output', fontsize=20)
         plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
 
         plt.savefig('./out/picture-'+str(index)+'-pipeline-out.png')

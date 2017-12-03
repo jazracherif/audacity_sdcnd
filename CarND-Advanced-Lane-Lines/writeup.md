@@ -20,8 +20,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [calib]: ./output_images/calibration.jpg "calibration Image"
+[undistorted]: ./output_images/undistorted.png "Undistorted"
+[pipeline-out]: ./output_images/pipeline-out.png "Undistorted"
 
-[image1]: ./examples/undistort_output.png "Undistorted"
+
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -56,13 +58,31 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 #### 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+![alt text][undistorted]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+I used a combination of color and gradient thresholds to generate a binary image. The threshold and color transformation functions pipelines are done in "pipelines.py" and "gradient_threshold.py".
 
-![alt text][image3]
+The function pipeline() (pipelines.py line 41) runs the undistorded image into both a color and a gradient threshold transformation before combining them:
+
+Color Transofrms:
+1. Transform the undistored image from RGB to HLS
+2. **yellow_binary**: Run a color threshold on the H channel to capture the yellow line. (H=19)
+3. **l_binary**: Run a threholding on the L channel to keep light parts of the picture, filtering anything below  (L >160)
+
+Gradient Threshold transforms (combined_thresh() in gradient_threshold.py line 133):
+1. Run a sobel operation on both x and y axis with kernel size 5 and threhols 20,100
+2. Apply a magnitude threholding on both x and y axis with thresholds 30,100
+3. Apply a direction of gradient thresholding with angle threshold between 0.7 and 1.3
+4. **sxbinary**: Combine all 3 previous operation with an OR operations
+
+I combine the output of these two transformations in the following way:
+1. Use the right part of the Gadient Threshold and AND it with the l_binary output
+2. Add the result with the yellow_binary image which capture the left yellow line.
+combined_binary[ (yellow_binary==1) | ( (l_binary==1) & (sxbinary_right==1))] = 1
+
+![alt text][pipeline-out.png]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
