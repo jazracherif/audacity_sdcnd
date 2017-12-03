@@ -23,7 +23,7 @@ The goals / steps of this project are the following:
 [undistorted]: ./output_images/undistorted.png "Undistorted"
 [pipeline-out]: ./output_images/pipeline-out.png "Pipeline Out"
 [warped]: ./output_images/warped.png "Warped picture"
-[warped]: ./output_images/histogram.png "Histogram"
+[histogram]: ./output_images/histogram.png "Histogram"
 
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
