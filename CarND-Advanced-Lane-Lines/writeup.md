@@ -1,4 +1,4 @@
-## Advanced Lane Finding
+# Advanced Lane Finding Project
 
 ---
 
@@ -24,20 +24,12 @@ The goals / steps of this project are the following:
 [scatter]: /output_images/scatter.png "Scatter plot"
 [lane-window]: /output_images/lane-window.png "Lane window"
 
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
-
-### Writeup / README
 
 ### Camera Calibration
 
@@ -66,14 +58,14 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 The function pipeline() (pipelines.py line 41) runs the undistorded image into both a color and a gradient threshold transformation before combining them:
 
-Color Transoforms (line 53 - 62 pipelines.py):
+Color Threshold Transformation (pipelines.py: line 53 - 62):
 1. Transform the undistored image from RGB to HLS
 2. **yellow_binary**: the output of a color threshold on the H channel, done to capture the yellow line. (H=19)
-3. **l_binary**: the output of a threholding on the L channel to keep lighter parts of the picture, filtering anything below 160.
+3. **l_binary**: the output of a thresholding on the L channel to keep lighter parts of the picture, filtering anything below 160.
 
-Gradient Threshold transforms (combined_thresh() in gradient_threshold.py line 133):
+Gradient Threshold transforms (combined_thresh() in gradient_threshold.py: line 133):
 1. Run a sobel operation on both x and y axis with kernel size 5 and threhols 20,100
-2. Apply a magnitude threholding on both x and y axis with thresholds 30,100
+2. Apply a magnitude thresholding on both x and y axis with thresholds 30,100
 3. Apply a direction of gradient thresholding with angle threshold between 0.7 and 1.3
 4. **sxbinary**: Combine all 3 previous operation with an OR operations
 
@@ -124,7 +116,7 @@ The Lane Detection logic is divided into 2 parts:
         ![alt text][histogram]
     
     3. Run a vertical sliding window around each peak capturing the nonzero pixels around a margin of 120px from the center, and recentering the windown whenver it contains more than 50 points. There are a total of 9 windows each of 720/9=80px height. See an example of this below:
-        ![alt][sliding-window]
+        ![alt text][sliding-window]
         
     4. Fit a polynomial line of degree 2 to the points detected for each line.
     5. Update the line's equation coefficients using an exponential moving average with beta=0.5
@@ -137,11 +129,11 @@ The Lane Detection logic is divided into 2 parts:
     
 2. In case a lane has been detected, don't run the exhaustive window sliding logic of 1.III but instead search for points close to the previously detected line. The funtion process_next_image() (lane_detection.py: line 258) is called instead and the following steps are executed:
     1. Retrieve each lane's fitted equations and filter points which are within a 100pixel margin from the line's center. The green region in the picture below illustrate the searched window.
-        ![alt][lane-window]
+        ![alt text][lane-window]
 
     2. To the detected points add an additional set which correspond to the line's equation in order to add robustness (similar to step 1-I).
     3. Concatenate the last 10 sets of points detected and fit a polynomial of degree 2. This is done in update_line_fit() (lane_detection.py: line 7). Below is a scatter plot of the left and right lines captured at the 4th image of the project_video.mp4 file:
-        ![alt][scatter]
+        ![alt text][scatter]
     4. Update the current lane coefficient using exponential moving average
     
 
