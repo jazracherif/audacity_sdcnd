@@ -83,7 +83,7 @@ I combine the output of these two transformations in the following way:
 1. Use the right part of the Gadient Threshold and AND it with the l_binary output
 2. Add the result with the yellow_binary image which capture the left yellow line.
 
-`combined_binary[ (yellow_binary==1) | ( (l_binary==1) & (sxbinary_right==1))] = 1`
+`combined_binary[(yellow_binary==1) | ((l_binary==1) & (sxbinary_right==1))] = 1`
 
 ![alt text][pipeline-out]
 
@@ -102,16 +102,33 @@ I verified that my perspective transform was working as expected by drawing the 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-The lane identication logic is implemented in file "/code/lane_detection.py". The logic is divided into 2 path:
+The lane identication logic is implemented in file "/code/lane_detection.py" and is called from within the process_image() function at lines 215-226
+
+2 additional classes were defined to help with this:
+
+a  Line class to help maintain past information about the left and right lines that forms the lane:
+```python
+class Line()  (main.py:line 90)
+```
+a class that implements exponential moving average to be applied to each of the lines polynomial coeffcients (a,b, and c in a.x^2 + b.x +c)
+```python
+class movingAvg() (main.py:line 11)
+```
+The Lane Detection logic is divided into 2 parts:
 1. When the data is new or there is a problem with the previous detection logic, a call to find_lanes() (line 117) is made. This function takes as input the warped image and then applies the following logic:
 
-a) If previous lane data is available, generate a set of point that fit the line and add that to the picture. This create a simple continuity and availablility of data
-`ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
-fitx = (current_fit.a*ploty**2 + current_fit.b*ploty + current_fit.c).astype(int)`
+    1. If previous lane data is available, generate a set of point that fit the line and add that to the picture. This create a simple continuity and availablility of data.
+        ```python
+        ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0] )
+        fitx = (current_fit.a*ploty**2 + current_fit.b*ploty + current_fit.c).astype(int)
+        ```
+    2. Create a histogram the number of pixels points at each x location, and find the leftmost and rightmost peaks. These peaks should correspond to the left and right line of the current lane. See an example below:
 
-b) Create a histogram the number of pixels points at each x location, and find the leftmost and rightmost peaks. These peaks should correspond to the left and right line of the current lane. See an example below:
-
-![alt text][histogram]
+    ![alt text][histogram]
+    
+    3. Run a sliding window around each peak capturing the nonzero pixels around a margin of 100px from the center. There are a total of 9 windows each of 720/9=80px height.
+    4. Fit a polynomial line of degree 2 to each line points detected.
+    5. Update the line equation coefficients using an exponential moving average
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
