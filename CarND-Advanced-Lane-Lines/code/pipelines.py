@@ -17,7 +17,7 @@ def pipeline(img, s_thresh=(0.5, 1), sx_thresh=(20, 100)):
     # Use a combination of thresholds
     sxbinary = gradient_threshold.combined_thresh(img)
     
-    # Threshold color channel
+    # Apply a color Threshold
     s_binary = np.zeros_like(s_channel)
     s_binary[(s_channel >= s_thresh[0]) & (s_channel <= s_thresh[1])] = 1
     
