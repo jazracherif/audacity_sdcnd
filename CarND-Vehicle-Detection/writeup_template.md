@@ -13,7 +13,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/car_not_car.png
+[car_not_car]: ./output_images/car_not_car.png ' Car and notCar'
+[hog]: ./output_images/HOG.png 'Hog Features'
+[hog_orient]: ./output_images/HOG_orient.png 'Hog Features'
+[hog_pix_per_cell]: ./output_images/HOG_pix_per_cell,orient=8,cellblock=2.png 'Hog Features'
+[hog_cell_per_block]: ./output_images/HOG_cell_per_block,orient=9,pix=8.png 'Hog Features'
+
+
+
 [image2]: ./examples/HOG_example.jpg
 [image3]: ./examples/sliding_windows.jpg
 [image4]: ./examples/sliding_window.jpg
@@ -29,27 +36,40 @@ The goals / steps of this project are the following:
 ### Writeup / README
 
 List of relevant files:
-- `feature_extraction_utilities.py`:
-- `vehicle_classifier.py`:
-- `nn_classifier.py` :
-- `vehicle_detection.py`:
+- `feature_extraction_utilities.py`: Utility function to extract HOG features
+- `vehicle_classifier.py`:  Implements various methods for training a vehicle classifier based on HOG, color histogram, and spatial binning.
+- `nn_classifier.py` : Implements a method to learn convolutional neural network to classify pictures as vehicle or non-vehicles.
+- `vehicle_detection.py`: Code for detecting vehicle in a picture, and drawing bounded box on a video stream.
 
 ### Histogram of Oriented Gradients (HOG)
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The code for this step is contained in the file `feature_extraction_utilities.py` and is inspired by code from section 29 HOG Classify for this project. The function **extract_features** (`feature_extraction_utilities.py, line:57)`  takes in the image and parameters for performing a HOG feature extraction, as well as a color histogram and a spatial binning. **get_hog_features()** (line17) eventuall calls **skimage.feature.hog**
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+Before extracting the features, I started by reading in all the `[vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip)` and `[non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip)` images from the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/).  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
-![alt text][image1]
+![alt text][car_not_car]
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is a comparison of both Car and notCar images using the `RGB`, `HLS`, and `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
+![alt text][hog]
 
-![alt text][image2]
+In the following series, we look at varying the orientation, pixels_per_cell, and cells_per_block for the HLS channel L image:
+
+*pix_per_cell = 8, cell_per_block =2*
+
+![alt text][hog_orient]
+
+*orient=8, cell_per_block=2*
+
+![alt text][hog_pix_per_cell]
+
+*orient=8, pix_per_cell=8*
+
+![alt text][hog_cell_per_block]
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
