@@ -153,9 +153,9 @@ Here are some images of some of the bounding boxes that were drawn for the same 
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I use HLS and extracted multiple channel HOG features plus histograms of color and combined them all into the feature vector, which provided a nice result.  By combining the SVM classified with a Neural Network, I was able to get a better classification outcome.
+Ultimately I used HLS and extracted multiple channel HOG features plus histograms of color and combined them all into the feature vector, which provided a nice result.  By combining the SVM classifier with a Neural Network, I was able to get a better classification outcome.
 
-The first step was to improve the classifiers, by choosing the best input features and doing hyperparamter tuning. After that, I experiement with multiple values of scale and cells_per_step. I use larger windows for the bottom of the picture and smaller ones for the middle part and didn't do any scanning of the upper half of the picture (see `code/vehicle_detection line 276-282`for this code and the chosen ystart and ystop )
+In order to get to good performance, the first step was to improve the classifier, by choosing the best input features and doing model selection and hyperparameter tuning. After that, I experimented with multiple values of *scale* and *cells_per_step*. I used larger scanning windows for the bottom of the picture and smaller ones for the middle part and didn't do any scanning of the upper half of the picture (see `code/vehicle_detection line 276-282` for this code and the chosen ystart and ystop )
 
 See next section for output images.
 
@@ -164,14 +164,16 @@ See next section for output images.
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video_out.mp4)
+
+Here's a [link to my project_video result](./project_video_out.mp4)
+Here's a [link to my test_video result](./test_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.
 
-In order to create smoothness, I have also implemented a caching mechanism (`./code/vehicle_detection.py filter_bbox() line 208`, whereby the last 20 frame heatmaps are saved in a stack and and are added to the current frame's heatmap. The threshold used for detecting a car is 30 and allows filtering out false positives that appear only in some frames. The draw back of this this is that it takes a few frames before detecting the presence of a car.
+In order to create window smoothness, I have also implemented a caching mechanism (`./code/vehicle_detection.py filter_bbox() line 208`, whereby the last 20 frame heatmaps are saved in a stack and and are added to the current frame's heatmap. The threshold used for detecting a car is 30 and allows filtering out false positives that appear only in some frames. The draw back of this this is that it takes a few frames before detecting the presence of a car.
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
