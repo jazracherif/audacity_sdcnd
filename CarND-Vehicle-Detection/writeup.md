@@ -20,6 +20,11 @@ The goals / steps of this project are the following:
 [hog_cell_per_block]: ./output_images/HOG_cell_per_block,orient=9,pix=8.png 'Hog Features'
 
 
+[windows1]: ./output_images/image1-scale-0.85-cells-3.jpg 'Windows 1'
+[windows2]: ./output_images/image1-scale-1.25-cells-2.jpg 'Windows 2'
+[windows3]: ./output_images/image1-scale-1.5-cells-3.jpg 'Windows 3'
+[windows4]: ./output_images/image1-scale-2.25-cells-2.jpg 'Windows 4'
+
 
 [image2]: ./examples/HOG_example.jpg
 [image3]: ./examples/sliding_windows.jpg
@@ -69,7 +74,7 @@ Orientation values seems to perform already well with 7 and 9 angles, and so a v
 
 ![alt text][hog_pix_per_cell]
 
-With pix_per_cell values above 8, the car boundaries are lost while for values of less than 8, too much information seems to be capture. A value of 8 was picked.
+With pix_per_cell values above 8, the car boundaries are lost while for values of less than 8, too much information seems to be captured. A value of 8 was picked.
 
 *orient=8, pix_per_cell=8*
 
@@ -82,15 +87,56 @@ I tried various combinations of parameters and...
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using in file `vehicle_classifier.py (lines: 118-193)`.
+- I have divided the data set in a training, validation and test sets each with a 20% split and randomization.
+- I have tried several kinds of classifiers and strategies including the following
+    - A grid search using LinearSVC over C with values between 1e-5, to 1.
+    - A grid search over svm.SVC which uses libsvm and is thus slower to train.
+    - A VotingClassifier with hard voting threshold over multiple LinearSVC models
+    - A gradient Boosting classifier to compare with
+    
+The input features consisted of the set of HOG features over the HLS image, together with a color histogram using function extract_features (`vehicle_classifier.py (lines: 81-86)`). The parameters for HOG were:
+- colorspace = 'HLS' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+- orient = 9
+- pix_per_cell = 8
+- cell_per_block = 2
+- hog_channel = "ALL" # Can be 0, 1, 2, or "ALL"
+
+The model that perform best was a LinearSVC with C=0.1
+**Test Accuracy of SVC =  0.986486**
+The final SVM model was stored in file vehicle_classifier.pkl and the scaler in vehicle_classifier_scaler.pkl
+
+In addition to the SVM model, I have implemented and trainined a convolutional neural network using Keras to see how it performs using only the raw image pixels. I implemeted a simple architecture in `nn_classifier.py, see nn_architecture() line 116`, which consists of 2 Convolutional layers with maxpooling and 1 dropout layers, followed by Fully Connected Layer with 32 node and a logistic function. With this model, I was able to achieve the following results:
+Training Accuracy: 0.9919
+Validataion Accuracy: 0.9944
+**Test accuracy: 0.994369369369**
+The final NN model was stored as keras_cifar10_trained_model.h5
+
+In my final solution, I combined both models in order to improve the overall detection accuracy.
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+First I implemented a sliding window search as described in the lecture videos but I eventually resorted to using the single HOG transformation over the whole image, followed by segmentation of the hog features into equivalent 64x64 image features. This was done in `vehicle_detection.py, find_cars() line:24`. The logic is borrowed from lesson 35 Hog subSampling Window search, and essentially iterates overall all blocks of hog features which corresponding to a 64x64 sub image, considering 2 additional parameters that can be set, the *scale* and the *cells_per_step*. For this project, I experimented with multiple values for *scale* randing from 0.6 to 2.5 and for *cells_per_step* from 2 to 9.
 
-![alt text][image3]
+Here are some images of some of the bounding boxes that were drawn for the same image.
+
+**scale = 0.85, cells_per_step=3**
+
+![alt text][windows1]
+
+**scale = 1.25, cells_per_step=3**
+
+![alt text][windows2]
+
+**scale = 1.5, cells_per_step=2**
+
+![alt text][windows3]
+
+**scale = 2.25, cells_per_step=2**
+
+![alt text][windows4]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
