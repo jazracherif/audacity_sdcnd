@@ -26,7 +26,7 @@ The goals / steps of this project are the following:
 [windows4]: ./output_images/image1-scale-2.25-cells-2.jpg 'Windows 4'
 
 
-[seq_image1]: ./output_images/seq_image1.jpg'Seq Image 1'
+[seq_image1]: ./output_images/seq_image1.jpg 'Seq Image 1'
 [seq_image2]: ./output_images/seq_image2.jpg 'Seq Image 2'
 [seq_image3]: ./output_images/seq_image3.jpg 'Seq Image 3'
 [seq_image4]: ./output_images/seq_image4.jpg 'Seq Image 4'
