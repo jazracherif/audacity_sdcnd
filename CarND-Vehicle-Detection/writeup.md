@@ -26,6 +26,15 @@ The goals / steps of this project are the following:
 [windows4]: ./output_images/image1-scale-2.25-cells-2.jpg 'Windows 4'
 
 
+[seq_image1]: ./output_images/seq_image1.jpg'Seq Image 1'
+[seq_image2]: ./output_images/seq_image2.jpg 'Seq Image 2'
+[seq_image3]: ./output_images/seq_image3.jpg 'Seq Image 3'
+[seq_image4]: ./output_images/seq_image4.jpg 'Seq Image 4'
+
+[seq_image4_label]: ./output_images/seq_image4-label.jpg 'Seq Image 4 label'
+[seq_image4_final]: ./output_images/seq_image4-final.jpg 'Seq Image 4 final'
+
+
 [image2]: ./examples/HOG_example.jpg
 [image3]: ./examples/sliding_windows.jpg
 [image4]: ./examples/sliding_window.jpg
@@ -141,7 +150,7 @@ Here are some images of some of the bounding boxes that were drawn for the same 
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched looked at both HLS and YCrCb multiple channel HOG features plus histograms of color in the feature vector, which provided a nice result.  By combining the SVM classified with a Neural Network, I was able to get a better classification outcome. Here are some example images:
 
 ![alt text][image4]
 ---
@@ -158,17 +167,20 @@ I recorded the positions of positive detections in each frame of the video.  Fro
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
-### Here are six frames and their corresponding heatmaps:
+### Here are 4 frames and their corresponding heatmaps:
 
-![alt text][image5]
+![alt text][seq_image1]
+![alt text][seq_image2]
+![alt text][seq_image3]
+![alt text][seq_image4]
 
 ### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
+
+![alt text][seq_image4_label]
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
 
-
+![alt text][seq_image4_final]
 
 ---
 
