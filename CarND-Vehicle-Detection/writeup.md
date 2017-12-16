@@ -152,13 +152,12 @@ Here are some images of some of the bounding boxes that were drawn for the same 
 
 Ultimately I searched looked at both HLS and YCrCb multiple channel HOG features plus histograms of color in the feature vector, which provided a nice result.  By combining the SVM classified with a Neural Network, I was able to get a better classification outcome. Here are some example images:
 
-![alt text][image4]
 ---
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -170,8 +169,11 @@ Here's an example result showing the heatmap from a series of frames of video, t
 ### Here are 4 frames and their corresponding heatmaps:
 
 ![alt text][seq_image1]
+
 ![alt text][seq_image2]
+
 ![alt text][seq_image3]
+
 ![alt text][seq_image4]
 
 ### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
