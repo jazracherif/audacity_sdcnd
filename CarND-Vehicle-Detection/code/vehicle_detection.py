@@ -21,11 +21,11 @@ from keras.models import load_model
 
 
 
-def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins, spatial_feat=False, hist_feat=False, cells_per_step=2, name=""):
+def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins, spatial_feat=False, hist_feat=False, cells_per_step=2, name="", DEBUG=False):
     """
         This function generates looks for cars in the current frame.
         1) Calculare the HOG feature for the whole frame
-        2) Break down HOG Features into grid representing a 64x64 image and aply the SVM classfied
+        2) Break down HOG Features into grid representing a 64x64 image and aply the SVM classified
         3) Also apply a trainined ConvNet on the raw 64x64 pixels image
         4) Pick those windows which are chosen by the SVM classifier and the NN classifier with high confidence.
     """
@@ -150,6 +150,10 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, ce
 
     if DEBUG:
         print ("scale: {} - #Box: {} - tried:{}".format(scale, len(good_boxes), num_box))
+        print (good_boxes)
+        for b in good_boxes:
+            cv2.rectangle(draw_img, tuple(b[0]), tuple(b[1]),(0,0,255), 3)
+        mpimg.imsave('./out/'+name+'-scale-'+str(scale)+'-cells-'+str(cells_per_step)+'.jpg', draw_img)
 
     return good_boxes
 
@@ -170,8 +174,9 @@ def apply_threshold(heatmap, threshold):
     # Return thresholded map
     return heatmap
 
-def draw_labeled_bboxes(img, labels):
+def draw_labeled_bboxes(name, img, labels, DEBUG = False):
     # Iterate through all detected cars and draw the boxes
+    heat_map_img = np.zeros_like(img[:,:,0]).astype('float32')
     
     for car_number in range(1, labels[1]+1):
         # Find pixels with each car_number label value
@@ -184,7 +189,17 @@ def draw_labeled_bboxes(img, labels):
         # Draw the box on the image
 #        print ("Draw", bbox[0], bbox[1])
         cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
+        
+        heat_map_img[nonzeroy, nonzerox] = car_number
+
+    if DEBUG:
+        heat_map_img /= np.max(heat_map_img)
+        plt.figure()
+        plt.imshow(heat_map_img)
+        plt.savefig('./out/'+name+'-label.jpg')
     
+#    mpimg.imsave('./out/'+name+'-label.jpg', heat_map_img)
+
     # Return the image
     return img
 
@@ -223,7 +238,7 @@ def filter_bbox(name, image, box_list, PLOT=True):
 
     print ("#Cars Detected", labels[1])
 
-    draw_img = draw_labeled_bboxes(np.copy(image), labels)
+    draw_img = draw_labeled_bboxes(name, np.copy(image), labels)
 
     if PLOT:
         fig = plt.figure()
@@ -256,27 +271,18 @@ def process_image(image):
     print ("process Image", name)
     start = time.time()
 
+    out_image = np.copy(image)
 
     box_list = find_cars(img=image, ystart=370, ystop=600, scale=1.25, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=2,name=name)
 
     box_list += find_cars(img=image, ystart=370, ystop=500, scale=0.85, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=3,name=name)
 
-#    box_list += find_cars(img=image, ystart=400, ystop=600, scale=1., svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=5,name=name)
-#
     box_list += find_cars(img=image, ystart=400, ystop=600, scale=1.5, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=3,name=name)
 #
     box_list += find_cars(img=image, ystart=390, ystop=650, scale=2.25, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=2,name=name)
 
-#
-#    box_list += find_cars(img=image, ystart=300, ystop=500, scale=1.8, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=7, name=name)
 
-#    box_list += find_cars(img=image, ystart=300, ystop=700, scale=1.8, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=13, name=name)
-#
-#    box_list += find_cars(img=image, ystart=300, ystop=700, scale=1.8, svc=svc, X_scaler=X_scaler, orient=orient, pix_per_cell=pix_per_cell, cell_per_block=cell_per_block, spatial_size=spatial_size, hist_bins=hist_bins, cells_per_step=19, name=name)
-
-    
-
-    draw_img = filter_bbox(name, image, box_list, PLOT=False)
+    draw_img = filter_bbox(name, out_image, box_list, PLOT=True)
 
     end = time.time()
     print(round(end-start, 2), 'Seconds to process 1 frame')
@@ -287,10 +293,10 @@ def process_image(image):
 ### INIT PARAMETERS
 
 # Video Location
-#FILE = '../test_video.mp4'
-#FILE_OUT = './out/test_video_out.mp4'
-FILE = '../project_video.mp4'
-FILE_OUT = './out/project_video_out.mp4'
+FILE = '../test_video.mp4'
+FILE_OUT = './out/test_video_out.mp4'
+#FILE = '../project_video.mp4'
+#FILE_OUT = './out/project_video_out.mp4'
 TEST = False   # Whether to run the logic on  ./test_images/*.jpg
 
 color_space = 'HLS' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
