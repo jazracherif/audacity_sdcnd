@@ -45,6 +45,7 @@ List of relevant files:
 - `vehicle_classifier.py`:  Implements various methods for training a vehicle classifier based on HOG, color histogram, and spatial binning.
 - `nn_classifier.py` : Implements a method to learn convolutional neural network to classify pictures as vehicle or non-vehicles.
 - `vehicle_detection.py`: Code for detecting vehicle in a picture, and drawing bounded box on a video stream.
+- `visualizations.py`: code for creating HOG Features visualizations.
 
 ### Histogram of Oriented Gradients (HOG)
 
