@@ -136,7 +136,7 @@ Here is an example of a traffic sign image before and after grayscaling.
 As the second step, I **normalized** the image data because this will allow better convergence during Gradient descent optimization
 
 **Data Augmentation Work**
-In the beginning, when I was changing my architecture and could not meet the target accuracy score, I decided to use data augmentation, though I did not use it in the end product. I was inspired by the discussion in this post on [Traffic sign classification](https://medium.com/@vivek.yadav/improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification-using-6355346da2dc) and used the following techinques:
+In the beginning, when I was changing my architecture and could not meet the target accuracy score, I decided to use data augmentation, though I did not use it in the end product. I was inspired by the discussion in this post on [Traffic sign classification](https://medium.com/@vivek.yadav/improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification-using-6355346da2dc) and which was mentionned in the discussion board (https://discussions.udacity.com/t/regarding-augmentation-of-dataset/370026/2), and used the following techinques:
 1. Brightness increase
 2. Rotation
 3. Translation
